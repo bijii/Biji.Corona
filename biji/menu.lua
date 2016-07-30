@@ -124,6 +124,7 @@ function Menu:toggle( )
 
 	self.isVisible = not self.isVisible
 	shadeBox.isVisible = self.isVisible
+	
 end
 
 function Menu:destroy( )

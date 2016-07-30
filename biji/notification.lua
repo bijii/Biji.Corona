@@ -4,11 +4,12 @@ local flatColors = require( "biji.flatColors" )
 local control = require( "biji.control" )
 local header = require( "biji.header" )
 
-local notification = { }
+local Notif = { }
 local text
 local box
 local sheet
 local spinner
+local shadeBox
 
 local boxHeight = 36
 local boxColor = flatColors.nephritis
@@ -28,7 +29,11 @@ local slideDelay = 2000
 local showing
 local loading
 
-function notification.update( )
+local function onShadeBoxTouch( event )
+	return true
+end
+
+function Notif.update( )
 	
 	if (not showing) then
 
@@ -101,9 +106,20 @@ local function init( message )
 
 	end
 
+	if (not shadeBox) then
+		local height = display.actualContentHeight - header.bottom
+		local x = display.contentCenterX
+		local y = display.screenOriginY + header.bottom + height / 2
+
+		shadeBox = display.newRect( x, y, display.actualContentWidth, height )
+		shadeBox.fill = { 0, 0, 0, 0.7 }
+		shadeBox.isVisible = false
+		shadeBox:addEventListener( "touch", onShadeBoxTouch )
+	end
+
 	text.text = message
 
-	notification.update( )
+	Notif.update( )
 
 	box.y = yPosHidden
 	text.y = yPosHidden
@@ -111,23 +127,23 @@ local function init( message )
 
 end
 
-function notification.showError( message )
+function Notif.showError( message )
 	
 	boxColor = flatColors.pomegranate
-	notification.show( message )
+	Notif.show( message )
 	boxColor = flatColors.nephritis
 
 end
 
-function notification.showInfo( message )
+function Notif.showInfo( message )
 
 	boxColor = flatColors.belizehole
-	notification.show( message )
+	Notif.show( message )
 	boxColor = flatColors.nephritis
 
 end
 
-function notification.show( message )
+function Notif.show( message )
 
 	showing = true
 	loading = false
@@ -154,15 +170,18 @@ function notification.show( message )
 	transition.to( text, { time = slideTime, delay = slideDelay, y = boxYHide, onComplete = function(e) showing = false end } )
 	transition.to( box, { time = slideTime, delay = slideDelay, y = boxYHide, onComplete = function(e) showing = false end } )
 
+	timer.performWithDelay( slideDelay, function(e) shadeBox.isVisible = false end )
+
 end
 
-function notification.loading( message )
+function Notif.loading( message )
 
 	showing = true
 	loading = true
 
 	init( message )
 	
+	shadeBox.isVisible = true
 	spinner.isVisible = true
 	spinner:start( )
 
@@ -188,7 +207,7 @@ function notification.loading( message )
 end
 
 
-function notification.hide( )
+function Notif.hide( )
 
 	local boxYHide = display.screenOriginY - boxHeight
 
@@ -200,20 +219,22 @@ function notification.hide( )
 	spinner.isVisible = false
 
 	showing = false
+	shadeBox.isVisible = false
 
 end
 
 
-function notification.destroy( )
+function Notif.destroy( )
 	
-	control.destroy( { text, box, sheet, spinner } )
+	control.destroy( { text, box, sheet, spinner, shadeBox } )
 
 	text = nil
 	box = nil
 	sheet = nil
 	spinner = nil
+	shadeBox = nil
 
 end
 
 
-return notification
+return Notif
