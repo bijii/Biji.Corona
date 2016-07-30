@@ -145,6 +145,8 @@ end
 
 function Notif.show( message )
 
+	control.hideNatives( )
+
 	showing = true
 	loading = false
 
@@ -171,10 +173,13 @@ function Notif.show( message )
 	transition.to( box, { time = slideTime, delay = slideDelay, y = boxYHide, onComplete = function(e) showing = false end } )
 
 	timer.performWithDelay( slideDelay, function(e) shadeBox.isVisible = false end )
+	timer.performWithDelay( slideDelay, control.showNatives )
 
 end
 
 function Notif.loading( message )
+
+	control.hideNatives( )
 
 	showing = true
 	loading = true
@@ -185,6 +190,7 @@ function Notif.loading( message )
 	spinner.isVisible = true
 	spinner:start( )
 
+	shadeBox:toFront( )
 	box:toFront( )
 	spinner:toFront( )
 	text:toFront( )
@@ -220,6 +226,8 @@ function Notif.hide( )
 
 	showing = false
 	shadeBox.isVisible = false
+
+ 	control.showNatives( )
 
 end
 

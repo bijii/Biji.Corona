@@ -6,13 +6,17 @@ local header = require( "biji.header" )
 local menu = require( "biji.menu" )
 local control = require( "biji.control" )
 
+local textField
+
 local function onButtonRelease( event )
+
+	log("textField", textField)
 
 	notif.loading( "Memulai proses..." )
 
 	timer.performWithDelay( 2000, function( event )
-		notif.showInfo( "Selesai" )		
-		-- notif.showError( "Error" )		
+		notif.showInfo( "Selesai" )
+		-- notif.showError( "Error" )
 	end )
 
 end
@@ -100,12 +104,12 @@ local function menuTest(  )
 		{  
 			text = "HOME",
 			iconName = "home",
-			sceneName = "home",
+			sceneName = "default",
 		},
-		{  
+		{
 			text = "SETTINGS",
 			iconName = "settings",
-			sceneName = "settings",
+			sceneName = "default",
 			color = flatColors.pumpkin,
 		}
 	}
@@ -121,21 +125,45 @@ end
 
 function textFieldTest(  )
 	
-	local textField = native.newTextField( display.contentCenterX, display.contentCenterY, display.contentWidth, 50 )
+	textField = native.newTextField( display.contentCenterX, display.contentCenterY, display.contentWidth, 30 )
 	textField.inputType = "number"
 	textField:resizeHeightToFitFont( )
 	
-	control.register(textField)
+	control.registerNative(textField)
 	control.setMaxInput(textField, 3)
 
 end
 
+function testText(  )
+	local topAlignAxis = 200
+
+-- Create first multi-line text object
+	local options1 = 
+	{
+	    text = "The quick brown fox jumped over the lazy dog.",
+	    x = 150,
+	    width = 200,     --required for multi-line and alignment
+	    height = 25,
+	    font = native.systemFont,
+	    fontSize = 18,
+	    y = 100
+	}
+	local myText1 = display.newText( options1 )
+	myText1:setFillColor( 1, 0, 0 )
+
+	-- Set anchor Y on object to 0 (top)
+	myText1.anchorY = 0
+	-- Align object to top alignment axis
+	myText1.y = topAlignAxis
+end
+
 function runTest(  )
 
+	textFieldTest( )
 	buttonTest( )
 	-- headerTest( )
 	menuTest( )
 
-	textFieldTest( )
+	-- testText( )
 	
 end

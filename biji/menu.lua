@@ -116,8 +116,10 @@ function Menu:toggle( )
 
 	if (self.isVisible) then
 		boxX = -(display.screenOriginX + Menu.width)
+		control.showNatives( )
 	else
 		boxX = display.screenOriginX + Menu.width / 2
+		control.hideNatives( )
 	end
 
 	transition.to( group, { time = slideTime, x = boxX, transition = easing.outQuint } )
