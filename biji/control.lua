@@ -1,23 +1,48 @@
 
 local display = require( "display" )
+local logger = require( "biji.logger" )
 
-local control = { }
+local Control = { }
+
+local controls = { }
+local textFields = { }
 
 
-function control.setMaxInput( textField, max )
-	textField:addEventListener( "userInput", function ( event )
-		if (event.phase == "editing" and string.len(event.text) > 4) then
-			textField.text = event.oldText
+function Control.setMaxInput( textField, max )
+
+	textField.maxInput = max
+
+	local newFieldIndex = #textFields + 1
+
+	local opt = {
+		textField = textField,
+		maxInput = function ( event )
+			local textField = event.target
+
+			if (event.phase == "editing" and string.len(textField.text) > textField.maxInput) then
+				textField.text = event.oldText
+			end
 		end
-	end )
+	}
+
+	textFields[newFieldIndex] = opt
+
+	textField:addEventListener( "userInput",  opt.maxInput )
+
 end
 
--- function controls.unsetMax( textField )
--- 	textField:removeEventListener( "userInput", listener )
 
--- end
+function Control.register( control )
 
-function control.destroy( object )
+	local newIndex = #controls + 1
+
+	control.index = newIndex
+	controls[newIndex] = control
+
+end
+
+
+function Control.destroy( object )
 
 	if (type(object) == "table") then
 		for k,v in pairs(object) do
@@ -31,7 +56,32 @@ function control.destroy( object )
 
 end
 
-function control.putBottom( object )
+
+function Control.destroyAll( )
+
+	-- remove max input listener	
+	for i=1,#textFields do
+		local opt = textFields[i]
+		
+		opt.textField:removeEventListener( "userInput", opt.maxInput )
+		log("tf:", i)
+		textFields[i] = nil
+	end
+
+	for i=1,#controls do
+		display.remove( controls[i] )
+		controls[i]:removeSelf( )
+		controls[i] = nil
+		log("ctrl:", i)
+	end
+
+	textFields = nil
+	controls = nil
+
+end
+
+
+function Control.putBottom( object )
 	
 	local halfHeight = object.height / 2
 	
@@ -39,7 +89,8 @@ function control.putBottom( object )
 
 end
 
-function control.putTop( object )
+
+function Control.putTop( object )
 
 	local halfHeight = object.height / 2
 	
@@ -47,11 +98,27 @@ function control.putTop( object )
 	
 end
 
-function control.fillWidth( object )
+
+function Control.fillWidth( object )
 	
 	object.width = display.actualContentWidth
 	object.x = display.contentCenterX
 
 end
 
-return control
+
+local function onSystemEvent( event )
+
+    local eventType = event.type
+
+    if ( event.type == "applicationExit" ) then
+        Control.destroyAll( )
+    end
+
+end
+
+
+Runtime:addEventListener( "system", onSystemEvent )
+
+
+return Control

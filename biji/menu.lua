@@ -12,7 +12,7 @@ local Menu = {
 	height = display.actualContentHeight,
 	
 	color = flatColors.clouds,
-	textSize = 20,
+	textSize = 16,
 
 	items = nil,
 

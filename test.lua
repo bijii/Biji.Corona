@@ -4,6 +4,7 @@ local flatButton = require( "biji.flatButton" )
 local notif = require( "biji.notification" )
 local header = require( "biji.header" )
 local menu = require( "biji.menu" )
+local control = require( "biji.control" )
 
 local function onButtonRelease( event )
 
@@ -118,10 +119,23 @@ local function menuTest(  )
 
 end
 
+function textFieldTest(  )
+	
+	local textField = native.newTextField( display.contentCenterX, display.contentCenterY, display.contentWidth, 50 )
+	textField.inputType = "number"
+	textField:resizeHeightToFitFont( )
+	
+	control.register(textField)
+	control.setMaxInput(textField, 3)
+
+end
+
 function runTest(  )
 
 	buttonTest( )
 	-- headerTest( )
 	menuTest( )
+
+	textFieldTest( )
 	
 end

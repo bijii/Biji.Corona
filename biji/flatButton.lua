@@ -2,10 +2,11 @@
 local display = require( "display" )
 local widget = require( "widget" )
 
+local control = require( "biji.control" )
 local logger = require( "biji.logger" )
 local flatColors = require( "biji.flatColors" )
 
-local flatButton = { }
+local FlatButton = { }
 
 
 local function onButtonEvent( event )
@@ -35,7 +36,7 @@ local function onButtonEvent( event )
 end
 
 
-function flatButton.newButton( opt )
+function FlatButton.newButton( opt )
 	
 	local group = display.newGroup( )
 	group.width = opt.width
@@ -93,6 +94,7 @@ function flatButton.newButton( opt )
 	button.onButtonRelease = opt.onRelease
 
 	group:insert( button )
+	control.register( button )
 
 	if (opt.iconName) then
 
@@ -100,10 +102,9 @@ function flatButton.newButton( opt )
 			opt.iconOffset = 15
 		end
 
-		local fileName = "/icons/" .. opt.iconName .. ".png"
-		local baseDir = system.ResourceDirectory
+		local fileName = "icons/" .. opt.iconName .. ".png"
+		local icon = display.newImageRect( fileName, system.ResourceDirectory, 24, 24 )
 
-		local icon = display.newImageRect( fileName, baseDir, 24, 24 )
 		icon.y = 0
 
 		if (opt.iconAlign == "left") then 
@@ -119,9 +120,13 @@ function flatButton.newButton( opt )
 		button.sceneName = opt.sceneName
 
 		group:insert( icon )
+		control.register( button )
 	end
 
+	control.register( group )
+
 	return group
+
 end
 
-return flatButton
+return FlatButton
