@@ -4,19 +4,20 @@ local loadsave = require( "libs.loadsave" )
 local console = true
 local file = false
 
-function log( text, args )
+function log( ... )
+	
 	if (console) then
-		if (type(args) == "table") then
-			print( text )
-			loadsave.printTable( args )
-		elseif (args == nil) then
-			print( text )
-		else
-			print( text .. tostring( args ))
+		for i=1,#arg do
+			if (type( arg[i] ) == "table") then
+				loadsave.printTable( arg[i] )
+			else
+				print( arg[i] )
+			end
 		end
 	end
 
 	if (file) then
-		
+
 	end
+	
 end

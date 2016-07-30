@@ -100,9 +100,9 @@ function flatButton.newButton( opt )
 			opt.iconOffset = 15
 		end
 
-		local fileName = "/assets/" .. opt.iconName .. ".png"
+		local fileName = "/icons/" .. opt.iconName .. ".png"
 		local baseDir = system.ResourceDirectory
-		
+
 		local icon = display.newImageRect( fileName, baseDir, 24, 24 )
 		icon.y = 0
 

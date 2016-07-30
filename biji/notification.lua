@@ -90,7 +90,7 @@ local function init( message )
 
 	if (spinner == nil) then
 
-		sheet = graphics.newImageSheet( "assets/spinner.png", system.ResourceDirectory, spinnerOption )
+		sheet = graphics.newImageSheet( "icons/spinner.png", system.ResourceDirectory, spinnerOption )
 
 		spinner = widget.newSpinner {
 			width = spinnerOption.width,
