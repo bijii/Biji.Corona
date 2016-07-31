@@ -3,18 +3,18 @@ local display = require( "display" )
 local composer = require( "composer" )
 local logger = require( "biji.logger" )
 local flatButton = require( "biji.flatButton" )
-local flatColors = require( "biji.flatColors" )
 local header = require( "biji.header" )
 local control = require( "biji.control" )
+local theme = require( "biji.theme" )
 
 local Menu = {
 	width = 200,
 	height = display.actualContentHeight,
 	
-	color = flatColors.clouds,
+	color = theme.menuColor,
 	
 	textSize = 18,
-	textColor = flatButton.white,
+	textColor = theme.menuTextColor,
 
 	items = nil,
 
@@ -77,24 +77,25 @@ function Menu.init( opt )
 	end
 
 	if (Menu.items) then
-		local lastY = -Menu.height / 2 + header.height / 2
-
+		-- based on group box
+		local lastTopY = -Menu.height / 2 + header.height / 2
+		local lastBottomY = Menu.height / 2 - header.height / 2
+		
 		for _,item in ipairs(Menu.items) do
-
-			item.textColor = item.textColor or Menu.textColor
 
 			local itemButton = flatButton.newButton {
 				text = item.text,
 				textSize = Menu.textSize,
-				textColor = item.textColor,
+				textColor = item.textColor or Menu.textColor,
 
 				color = item.color or Menu.color,
 				iconName = item.iconName,
 				iconAlign = "left",
 
 				width = Menu.width,
-				height = header.height,
-				y = lastY,
+				height = item.height or header.height,
+				
+				y = item.position == "bottom" and lastBottomY or lastTopY,
 
 				sceneName = item.sceneName,
 				onClick = item.onClick,
@@ -112,13 +113,17 @@ function Menu.init( opt )
 				end
 			}
 
-			lastY = lastY + header.height
+			if ( item.position == "top" ) then
+				lastTopY = lastTopY + itemButton.height
+			else
+				lastBottomY = lastBottomY - itemButton.height				
+			end
 
-			group:insert(itemButton)
+			group:insert( itemButton )
 		end
 	end
 
-	group.x = -(display.screenOriginX + Menu.width)
+	group.x = -( display.screenOriginX + Menu.width )
 	group.y = display.screenOriginY + header.bottom + Menu.height / 2
 
 	return Menu

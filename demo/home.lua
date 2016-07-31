@@ -37,12 +37,15 @@ function scene:create( event )
 			{
 				text = "Home",
 				iconName = "home",
-				sceneName = "demo.home"
+				sceneName = "demo.home",
+				position = "top",
 			},
 			{
 				text = "Logout",
 				iconName = "exit",
-				onClick = logout
+				color = flatColors.shade( flatColors.nephritis, 0.2 ),
+				position = "bottom",
+				onClick = logout,
 			}
 		}
 	}

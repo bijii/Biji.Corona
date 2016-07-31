@@ -1,8 +1,8 @@
 
 local widget = require( "widget" )
-local flatColors = require( "biji.flatColors" )
 local control = require( "biji.control" )
 local header = require( "biji.header" )
+local theme = require( "biji.theme" )
 
 local Notif = { }
 local text
@@ -11,9 +11,9 @@ local sheet
 local spinner
 local shadeBox
 
-local boxHeight = 36
-local boxColor = flatColors.nephritis
-local fontSize = 18
+local boxHeight = 38
+local boxColor = theme.notifColor
+local fontSize = 16
 
 local spinnerOption = { 
 	width = 16, 
@@ -29,14 +29,15 @@ local slideDelay = 2000
 local showing
 local loading
 
+
 local function onShadeBoxTouch( event )
 	return true
 end
 
-function Notif.update( )
-	
-	if (not showing) then
 
+function Notif.update( )
+
+	if (not showing) then
 		local yPosHidden = -math.abs(display.screenOriginY) * 2 - boxHeight
 
 		if (box ~= nil)	then box.y = yPosHidden end
@@ -44,7 +45,6 @@ function Notif.update( )
 		if (spinner ~= nil) then spinner.y = yPosHidden end
 
 		return
-
 	end
 
 	local centerX, originY = display.contentCenterX, display.screenOriginY
@@ -52,22 +52,22 @@ function Notif.update( )
 	local yPos = originY + box.height / 2 + display.statusBarHeight 
 
 	if (text ~= nil and box ~= nil) then
-
 		text.x, box.x = centerX, centerX
 		text.y, box.y = yPos, yPos
 		text.width, box.width = contentWidth, contentWidth
 		text.height, box.height = boxHeight, boxHeight
-
 	end
 
 	if (spinner ~= nil and loading) then
 		spinner.x = display.screenOriginX + boxHeight * 0.5
 		spinner.y = yPos
 	end
+
 end
 
 
 local function init( message )
+	
 	local yPosHidden = -math.abs(display.screenOriginY) * 2 - boxHeight
 
 	if (box == nil) then
@@ -107,6 +107,7 @@ local function init( message )
 	end
 
 	if (not shadeBox) then
+
 		local height = display.actualContentHeight - header.bottom
 		local x = display.contentCenterX
 		local y = display.screenOriginY + header.bottom + height / 2
@@ -115,6 +116,7 @@ local function init( message )
 		shadeBox.fill = { 0, 0, 0, 0.7 }
 		shadeBox.isVisible = false
 		shadeBox:addEventListener( "touch", onShadeBoxTouch )
+
 	end
 
 	text.text = message
@@ -127,23 +129,8 @@ local function init( message )
 
 end
 
-function Notif.showError( message )
-	
-	boxColor = flatColors.pomegranate
-	Notif.show( message )
-	boxColor = flatColors.nephritis
 
-end
-
-function Notif.showInfo( message )
-
-	boxColor = flatColors.belizehole
-	Notif.show( message )
-	boxColor = flatColors.nephritis
-
-end
-
-function Notif.show( message )
+local function show( message )
 
 	control.hideNatives( )
 
@@ -177,6 +164,19 @@ function Notif.show( message )
 
 end
 
+
+function Notif.showError( message )
+	boxColor = theme.notifErrorColor
+	show( message )
+end
+
+
+function Notif.showInfo( message )
+	boxColor = theme.notifColor
+	show( message )
+end
+
+
 function Notif.loading( message )
 
 	control.hideNatives( )
@@ -184,6 +184,7 @@ function Notif.loading( message )
 	showing = true
 	loading = true
 
+	boxColor = theme.notifLoadingColor
 	init( message )
 	
 	shadeBox.isVisible = true
@@ -199,7 +200,6 @@ function Notif.loading( message )
 
 	if (header.isVisible) then
 		offset = header.height
-
 		header.toFront( )
 	end
 

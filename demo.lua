@@ -17,7 +17,15 @@ local control = require( "biji.control" )
 
 -- local
 local function onLogin( event )
-	composer.gotoScene( "demo.home", { effect = "slideLeft", time = 200 } )
+	notif.loading( "Logging in..." )
+	
+	timer.performWithDelay( 2000, function ( event )
+		notif.showInfo( "Logged in!" )
+
+		timer.performWithDelay( 1800, function ( event )
+			composer.gotoScene( "demo.home", { effect = "slideDown" } )	
+		end)
+	end)
 end
 
 

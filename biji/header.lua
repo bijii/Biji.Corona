@@ -4,26 +4,30 @@ local control = require( "biji.control" )
 local flatColors = require( "biji.flatColors" )
 local flatButton = require( "biji.flatButton" )
 local logger = require( "biji.logger" )
-
-
-local headerColor = flatColors.shade( flatColors.midnightblue, 0.3 )
+local theme = require( "biji.theme" )
 
 local header = {
 	height = 40,
 	width = display.actualContentWidth,
-	color = headerColor,
+	color = theme.headerColor,
 
-	text = nil,
+	text = "",
 	textSize = 20,
-	textColor = flatColors.clouds,
+	textColor = theme.headerTextColor,
 
 	menu = nil,
 
-	x, y, top, bottom,
+	x = 0, 
+	y = 0, 
+	top = display.screenOriginY + display.statusBarHeight, 
+	bottom = display.screenOriginY + display.statusBarHeight,
+	
 	isVisible = false,
 
 	onBack = nil,
 	onNext = nil,
+
+
 }
 
 local group
@@ -37,12 +41,12 @@ local infoButton
 local backButton
 local nextButton
 
+
 function header.update( )
-	
 	control:fillWidth( group )
 	control:putTop( group )
-
 end
+
 
 local function onMenuButtonRelease(  )
 	if (header.menu) then
@@ -50,11 +54,13 @@ local function onMenuButtonRelease(  )
 	end
 end
 
+
 local function onBackButtonRelease(  )
 	if (header.onBack) then
 		header.onBack( )
 	end
 end
+
 
 local function onNextButtonRelease(  )
 	if (header.onNext) then
@@ -62,8 +68,8 @@ local function onNextButtonRelease(  )
 	end
 end
 
-local function initButtons( )
 
+local function initButtons( )
 	local option = {
 		width = header.height,
 		height = header.height,
@@ -92,11 +98,10 @@ local function initButtons( )
 
 	backButton.isVisible = false
 	nextButton.isVisible = false
-
 end
 
+
 function header.init( option )
-	
 	-- init option
 	if (option) then	
 		header.height = option.height or header.height
@@ -157,10 +162,15 @@ function header.init( option )
 	control.fillWidth( group )
 	control.putTop( group )
 
-	header.x, header.y = group.x, group.y
-	header.top, header.bottom = display.statusBarHeight, display.statusBarHeight + header.height
+	header.x = group.x
+	header.y = group.y
 
-	header.isVisible = true
+	header.top = display.screenOriginY + display.statusBarHeight
+	header.bottom = display.screenOriginY + display.statusBarHeight + header.height
+
+	header.isVisible = false
+	group.y = -header.y
+
 end
 
 
@@ -212,11 +222,17 @@ function header:toFront( )
 end
 
 function header.show( )
-	group.isVisible = true
+	transition.to( group, { y = header.y, effect = "slideUp" } )
+	
+	header.bottom = display.screenOriginY + display.statusBarHeight + header.height
+	header.isVisible = true
 end
 
 function header.hide( )
-	group.isVisible = false	
+	transition.to( group, { y = -header.y, effect = "slideUp" } )
+	
+	header.bottom = display.screenOriginY + display.statusBarHeight
+	header.isVisible = false
 end
 
 

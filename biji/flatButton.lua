@@ -5,6 +5,7 @@ local widget = require( "widget" )
 local control = require( "biji.control" )
 local logger = require( "biji.logger" )
 local flatColors = require( "biji.flatColors" )
+local theme = require( "biji.theme" )
 
 local FlatButton = { }
 
@@ -45,18 +46,9 @@ function FlatButton.newButton( opt )
 	group.y = opt.y or 0
 
 	-- default
-	local fillColor = opt.color
-	local borderColor = opt.borderColor
-	local textColor = opt.textColor
-
-	-- update if color name used
-	if (opt.colorName) then fillColor = flatColors[opt.colorName] end
-	if (opt.borderColorName) then borderColor = flatColors[opt.borderColorName] end
-	if (opt.textColorName) then textColor = flatColors[opt.textColorName] end
-
-	-- update if nil
-	if (not borderColor) then borderColor = { 0, 0, 0, 0 } end
-	if (not textColor) then textColor = flatColors.clouds end
+	local fillColor = opt.color or theme.buttonColor
+	local borderColor = opt.borderColor or { 0, 0, 0, 0 }
+	local textColor = opt.textColor or theme.buttonTextColor
 
 	local textOffset = 0
 

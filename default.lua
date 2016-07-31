@@ -15,8 +15,13 @@ local control = require( "biji.control" )
 -- ui
 
 -- local
+function onOrientationChange( event )
+end
 
 function scene:create( event )
+	local sceneGroup = self.view
+	
+	-- sceneGroup:insert( )
 end
 
 function scene:show( event )
@@ -38,10 +43,6 @@ scene:addEventListener( "create" )
 scene:addEventListener( "show" )
 scene:addEventListener( "hide" )
 scene:addEventListener( "destroy" )
-
-local function onOrientationChange( event )
-
-end
 
 Runtime:addEventListener( "orientation", onOrientationChange )
 

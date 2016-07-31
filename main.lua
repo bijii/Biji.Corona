@@ -9,7 +9,7 @@ display.setDefault( "background", unpack( flatColors.clouds ) )
 display.setStatusBar( display.DefaultStatusBar )
 
 widget.setTheme( "widget_theme_android_holo_light" )
-composer.gotoScene( "demo", { effect = "fade" } )
+composer.gotoScene( "demo", { effect = "slideUp" } )
 
 -- require( "test" )
 -- runTest( )
