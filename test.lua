@@ -126,6 +126,7 @@ end
 function textFieldTest(  )
 	
 	textField = native.newTextField( display.contentCenterX, display.contentCenterY, display.contentWidth, 30 )
+	textField.placeholder = "(no pin)"
 	textField.inputType = "number"
 	textField:resizeHeightToFitFont( )
 	

@@ -15,11 +15,43 @@ local control = require( "biji.control" )
 -- ui
 
 -- local
+local function logout( )
+	header.hide( )
+	composer.gotoScene( "demo", { effect = "fade", time = 200 } )
+end
+
 
 function scene:create( event )
+	header.init {
+		color = flatColors.emerald,
+
+		text = "Demo",
+		textColor = flatColors.white,
+	}
+
+	local myMenu = menu.init {
+		color = flatColors.nephritis,
+		textColor = flatColors.white,
+
+		items = {
+			{
+				text = "Home",
+				iconName = "home",
+				sceneName = "demo.home"
+			},
+			{
+				text = "Logout",
+				iconName = "exit",
+				onClick = logout
+			}
+		}
+	}
+
+	header.menu = myMenu
 end
 
 function scene:show( event )
+	header.show( )
 end
 
 function scene:hide( event )

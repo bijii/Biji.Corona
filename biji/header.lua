@@ -161,7 +161,6 @@ function header.init( option )
 	header.top, header.bottom = display.statusBarHeight, display.statusBarHeight + header.height
 
 	header.isVisible = true
-
 end
 
 
@@ -191,7 +190,6 @@ end
 
 
 function header.destroy(  )
-
 	control.destroy( header.menu )
 	control.destroy( box )
 	control.destroy( group )
@@ -200,12 +198,10 @@ function header.destroy(  )
 	header = nil
 	box = nil
 	group = nil
-
 end
 
 
 function header:toFront( )
-	
 	if (group) then
 		group:toFront( )
 	end
@@ -213,7 +209,14 @@ function header:toFront( )
 	if (notifBar) then
 		notifBar:toFront( )
 	end
+end
 
+function header.show( )
+	group.isVisible = true
+end
+
+function header.hide( )
+	group.isVisible = false	
 end
 
 

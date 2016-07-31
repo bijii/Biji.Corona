@@ -11,7 +11,7 @@ local FlatButton = { }
 
 local function onButtonEvent( event )
 
-	if (event.phase == "began" and event.target.icon) then
+	if (event.phase == "began") then
 		
 		if (event.target.onButtonPress) then
 			event.target.onButtonPress( event )
@@ -21,7 +21,7 @@ local function onButtonEvent( event )
 			event.target.icon:setFillColor( 0.7 )
 		end
 
-	elseif (event.phase == "ended" and event.target.icon) then
+	elseif (event.phase == "ended") then
 
 		if (event.target.onButtonRelease) then
 			event.target.onButtonRelease ( event )
@@ -47,16 +47,16 @@ function FlatButton.newButton( opt )
 	-- default
 	local fillColor = opt.color
 	local borderColor = opt.borderColor
-	local labelColor = opt.labelColor
+	local textColor = opt.textColor
 
 	-- update if color name used
 	if (opt.colorName) then fillColor = flatColors[opt.colorName] end
 	if (opt.borderColorName) then borderColor = flatColors[opt.borderColorName] end
-	if (opt.textColorName) then labelColor = flatColors[opt.textColorName] end
+	if (opt.textColorName) then textColor = flatColors[opt.textColorName] end
 
 	-- update if nil
 	if (not borderColor) then borderColor = { 0, 0, 0, 0 } end
-	if (not labelColor) then labelColor = flatColors.clouds end
+	if (not textColor) then textColor = flatColors.clouds end
 
 	local textOffset = 0
 
@@ -76,9 +76,10 @@ function FlatButton.newButton( opt )
 		strokeWidth = opt.borderWidth or 0,
 
 		label = opt.text,
-		labelColor = { default = labelColor, over = flatColors.shade( labelColor ) },
+		labelColor = { default = textColor, over = flatColors.shade( textColor ) },
 		labelAlign = opt.textAlign,
 		labelXOffset = textOffset,
+		
 		font = opt.textFont or "fonts/Roboto-Light.ttf",
 		fontSize = opt.textSize or 14,
 
@@ -118,6 +119,7 @@ function FlatButton.newButton( opt )
 		button.icon = icon
 		button.text = opt.text
 		button.sceneName = opt.sceneName
+		button.onClick = opt.onClick
 
 		group:insert( icon )
 		control.register( button )

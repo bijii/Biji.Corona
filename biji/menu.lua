@@ -12,7 +12,9 @@ local Menu = {
 	height = display.actualContentHeight,
 	
 	color = flatColors.clouds,
-	textSize = 16,
+	
+	textSize = 18,
+	textColor = flatButton.white,
 
 	items = nil,
 
@@ -23,14 +25,20 @@ local box
 local shadeBox
 local group
 
-local function onShadeBoxTouch( event )
 
+local function onShadeBoxTouch( event )
 	if (event.phase == "ended") then
 		Menu:toggle( )
 	end
 
 	return true
 end
+
+
+local function onBoxTouch( event )
+	return true
+end
+
 
 function Menu.init( opt )
 
@@ -43,6 +51,7 @@ function Menu.init( opt )
 		Menu.color = opt.color or Menu.color
 		Menu.items = opt.items
 		Menu.textSize = opt.textSize or Menu.textSize
+		Menu.textColor = opt.textColor or Menu.textColor
 	end
 
 	if (not group) then
@@ -55,13 +64,14 @@ function Menu.init( opt )
 
 		shadeBox = display.newRect( x, y, display.actualContentWidth, Menu.height )
 		shadeBox.fill = { 0, 0, 0, 0.7 }
-		shadeBox.isVisible = false
+		shadeBox.alpha = 0
 		shadeBox:addEventListener( "touch", onShadeBoxTouch )
 	end
 
 	if (not box) then
 		box = display.newRect( 0, 0, Menu.width, Menu.height)
 		box.fill = Menu.color
+		box:addEventListener( "touch", onBoxTouch )
 
 		group:insert( box )
 	end
@@ -71,10 +81,12 @@ function Menu.init( opt )
 
 		for _,item in ipairs(Menu.items) do
 
+			item.textColor = item.textColor or Menu.textColor
+
 			local itemButton = flatButton.newButton {
 				text = item.text,
 				textSize = Menu.textSize,
-				textColor = Menu.color,
+				textColor = item.textColor,
 
 				color = item.color or Menu.color,
 				iconName = item.iconName,
@@ -85,9 +97,17 @@ function Menu.init( opt )
 				y = lastY,
 
 				sceneName = item.sceneName,
+				onClick = item.onClick,
 
 				onRelease = function ( event )
-					composer.gotoScene( event.target.sceneName, { time = 500, event = "flip" } )
+					if ( event.target.sceneName ) then
+						composer.gotoScene( event.target.sceneName, { time = 500, event = "flip" } )
+					end
+
+					if ( event.target.onClick ) then
+						event.target.onClick( )
+					end
+
 					Menu:toggle( )
 				end
 			}
@@ -108,25 +128,27 @@ end
 local slideTime = 400
 
 function Menu:toggle( )
-
 	shadeBox:toFront( )
 	group:toFront( )
 
 	local boxX
+	local shadeBoxAlpha
 
 	if (self.isVisible) then
 		boxX = -(display.screenOriginX + Menu.width)
+		shadeBoxAlpha = 0
 		control.showNatives( )
 	else
 		boxX = display.screenOriginX + Menu.width / 2
+		shadeBoxAlpha = 1
 		control.hideNatives( )
 	end
 
 	transition.to( group, { time = slideTime, x = boxX, transition = easing.outQuint } )
 
 	self.isVisible = not self.isVisible
-	shadeBox.isVisible = self.isVisible
-	
+
+	transition.to( shadeBox, { time = slideTime / 2, alpha = shadeBoxAlpha } )
 end
 
 function Menu:destroy( )
