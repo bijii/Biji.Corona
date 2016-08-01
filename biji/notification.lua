@@ -49,7 +49,7 @@ function Notif.update( )
 
 	local centerX, originY = display.contentCenterX, display.screenOriginY
 	local contentWidth = display.actualContentWidth
-	local yPos = originY + box.height / 2 + display.statusBarHeight 
+	local yPos = originY + box.height / 2 + display.topStatusBarContentHeight 
 
 	if (text ~= nil and box ~= nil) then
 		text.x, box.x = centerX, centerX
@@ -108,9 +108,9 @@ local function init( message )
 
 	if (not shadeBox) then
 
-		local height = display.actualContentHeight - header.bottom
+		local height = display.actualContentHeight -- - header.bottom
 		local x = display.contentCenterX
-		local y = display.screenOriginY + header.bottom + height / 2
+		local y = display.screenOriginY + height / 2 -- + header.bottom 
 
 		shadeBox = display.newRect( x, y, display.actualContentWidth, height )
 		shadeBox.fill = { 0, 0, 0, 0.7 }
@@ -146,11 +146,10 @@ local function show( message )
 
 	if (header.isVisible) then
 		offset = header.height
-
 		header.toFront( )
 	end
 
-	local boxY = display.screenOriginY + boxHeight / 2 + display.statusBarHeight + offset
+	local boxY = display.screenOriginY + boxHeight / 2 + display.topStatusBarContentHeight + offset
 	local boxYHide = display.screenOriginY - boxHeight
 
 	transition.to( box, { time = slideTime, y = boxY } )
@@ -203,7 +202,7 @@ function Notif.loading( message )
 		header.toFront( )
 	end
 
-	local boxY = display.screenOriginY + boxHeight * 0.5 + display.statusBarHeight + offset
+	local boxY = display.screenOriginY + boxHeight * 0.5 + display.topStatusBarContentHeight + offset
 	local boxYHide = display.screenOriginY - boxHeight
 
 	transition.to( box, { time = slideTime, y = boxY } )

@@ -120,6 +120,8 @@ local function menuTest(  )
 	}
 
 	header.menu = myMenu
+	header.show( )
+	-- header.hide( )
 
 end
 

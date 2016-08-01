@@ -129,7 +129,7 @@ end
 
 function Control.putTop( object )
 	local halfHeight = object.height / 2
-	object.y = display.screenOriginY + display.statusBarHeight + halfHeight
+	object.y = display.screenOriginY + display.topStatusBarContentHeight + halfHeight
 end
 
 

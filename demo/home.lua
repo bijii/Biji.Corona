@@ -16,8 +16,13 @@ local control = require( "biji.control" )
 
 -- local
 local function logout( )
-	header.hide( )
-	composer.gotoScene( "demo", { effect = "fade", time = 200 } )
+	notif.loading("Logging out...")
+
+	timer.performWithDelay( 1800, function ( )
+		notif.hide( )
+		header.hide( )
+		composer.gotoScene( "demo", { effect = "slideUp" } )
+	end )
 end
 
 

@@ -19,20 +19,18 @@ local header = {
 
 	x = 0, 
 	y = 0, 
-	top = display.screenOriginY + display.statusBarHeight, 
-	bottom = display.screenOriginY + display.statusBarHeight,
+	top = display.screenOriginY + display.topStatusBarContentHeight, 
+	bottom = display.screenOriginY + display.topStatusBarContentHeight + 40, -- + height
 	
 	isVisible = false,
 
 	onBack = nil,
 	onNext = nil,
-
-
 }
 
 local group
 
-local notifBar
+local statusBar
 local box
 local titleText
 
@@ -40,7 +38,6 @@ local menuButton
 local infoButton
 local backButton
 local nextButton
-
 
 function header.update( )
 	control:fillWidth( group )
@@ -51,6 +48,7 @@ end
 local function onMenuButtonRelease(  )
 	if (header.menu) then
 		header.menu:toggle( )
+		group:toFront( )
 	end
 end
 
@@ -73,7 +71,7 @@ local function initButtons( )
 	local option = {
 		width = header.height,
 		height = header.height,
-		
+	
 		x = header.height / 2 - header.width / 2,
 
 		color = header.color,
@@ -101,9 +99,46 @@ local function initButtons( )
 end
 
 
+local function initStatusBar( )
+	if (not statusBar) then
+		local height = display.topStatusBarContentHeight
+		
+		local x = display.screenOriginX + header.width / 2
+		local y = display.screenOriginY + height / 2
+
+		statusBar = display.newRect( x, y, header.width, height )
+	end
+
+	statusBar.fill = flatColors.shade( header.color, 0.1 )
+end
+
+
+local function initHeaderBox( )
+	if (not box) then
+		box = display.newRect( 0, 0, header.width, header.height )
+		group:insert( box )
+	end
+
+	if (header.text and not titleText) then
+		titleText = display.newText {
+			text = header.text,
+			align = "center",
+			width = header.width,
+			font = "fonts/Fabrica",
+			fontSize = header.textSize
+		}
+
+		group:insert( titleText )
+	end
+
+	box.fill = header.color
+	titleText:setFillColor( unpack( header.textColor ) )
+end
+
+
 function header.init( option )
 	-- init option
-	if (option) then	
+	if (option) then
 		header.height = option.height or header.height
 		header.color = option.color or header.color
 
@@ -115,48 +150,15 @@ function header.init( option )
 		header.onNext = option.onNext or nil
 	end
 
-	local x, y = display.screenOriginX + header.width / 2, display.screenOriginY + header.height / 2
-
 	-- init group
 	if (not group) then
 		group = display.newGroup( )
 	end
-
-	-- notifBar
-	if (not notifBar) then
-		local height = display.statusBarHeight
-		local y = display.screenOriginY + height / 2
-		local color = flatColors.shade( header.color, 0.1 )
-
-		notifBar = display.newRect( x, y, header.width, height )
-		notifBar.fill = color
-	end
-
+	-- top status bar
+	initStatusBar( )
 	-- create box
-	if (not box) then
-		box = display.newRect( 0, 0, header.width, header.height )
-		box.fill = header.color
-
-		group:insert( box )
-	end
-
-	-- init title
-	if (header.text) then
-		
-		titleText = display.newText {
-			text = header.text,
-			align = "center",
-			width = header.width,
-			font = "fonts/Fabrica",
-			fontSize = header.textSize
-		}
-
-		titleText:setFillColor( unpack( header.textColor ) )
-
-		group:insert( titleText )
-
-	end
-
+	initHeaderBox( )
+	-- create buttons
 	initButtons( )
 
 	control.fillWidth( group )
@@ -165,12 +167,13 @@ function header.init( option )
 	header.x = group.x
 	header.y = group.y
 
-	header.top = display.screenOriginY + display.statusBarHeight
-	header.bottom = display.screenOriginY + display.statusBarHeight + header.height
+	header.top = display.screenOriginY
+	header.bottom = display.screenOriginY + display.topStatusBarContentHeight + header.height
 
 	header.isVisible = false
-	group.y = -header.y
-
+	
+	-- hide group
+	group.y = header.top - header.y
 end
 
 
@@ -216,24 +219,23 @@ function header:toFront( )
 		group:toFront( )
 	end
 
-	if (notifBar) then
-		notifBar:toFront( )
+	if (statusBar) then
+		statusBar:toFront( )
 	end
 end
 
 function header.show( )
 	transition.to( group, { y = header.y, effect = "slideUp" } )
-	
-	header.bottom = display.screenOriginY + display.statusBarHeight + header.height
 	header.isVisible = true
 end
 
 function header.hide( )
-	transition.to( group, { y = -header.y, effect = "slideUp" } )
-	
-	header.bottom = display.screenOriginY + display.statusBarHeight
+	local topy = header.top - math.abs(header.y)
+
+	transition.to( group, { y = topy, effect = "slideUp" } )
 	header.isVisible = false
 end
 
+initStatusBar( )
 
 return header

@@ -9,7 +9,7 @@ local theme = require( "biji.theme" )
 
 local Menu = {
 	width = 200,
-	height = display.actualContentHeight,
+	height = display.actualContentHeight - header.height - display.topStatusBarContentHeight,
 	
 	color = theme.menuColor,
 	
@@ -35,16 +35,97 @@ local function onShadeBoxTouch( event )
 end
 
 
-local function onBoxTouch( event )
-	return true
+local function initShadeBox(  )
+	if (not shadeBox) then
+		local x = display.contentCenterX
+		local y = header.bottom + Menu.height / 2
+
+		shadeBox = display.newRect( x, y, display.actualContentWidth, Menu.height )
+		shadeBox:addEventListener( "touch", onShadeBoxTouch )
+	end	
+
+	shadeBox.fill = { 0, 0, 0, 0.7 }
+	shadeBox.alpha = 0
+end
+
+
+local function initMenuBox(  )
+	if (not box) then
+		box = display.newRect( 0, 0, Menu.width, Menu.height)
+		box:addEventListener( "touch", function ( event ) return true end )
+
+		group:insert( box )
+	end
+
+	box.fill = Menu.color
+end
+
+
+local function onMenuItemRelease( event )
+	if ( event.target.sceneName ) then
+		composer.gotoScene( event.target.sceneName, { time = 500, event = "flip" } )
+	end
+
+	if ( event.target.onClick ) then
+		event.target.onClick( )
+	end
+
+	Menu:toggle( )
+end
+
+
+local function newMenuItem( item, lastBottomY, lastTopY )
+
+	local itemButton = flatButton.newButton {
+
+		text = item.text,
+		textSize = Menu.textSize,
+		textColor = item.textColor or Menu.textColor,
+
+		color = item.color or Menu.color,
+		iconName = item.iconName,
+		iconAlign = "left",
+
+		width = Menu.width,
+		height = item.height or header.height,
+		
+		y = item.position == "bottom" and lastBottomY or lastTopY,
+
+		sceneName = item.sceneName,
+		onClick = item.onClick,
+
+		onRelease = onMenuItemRelease
+	}
+
+	return itemButton
+
+end
+
+local function initMenuItems(  )
+
+	if (Menu.items) then
+		-- based on group box
+		local lastTopY = -Menu.height / 2 + header.height / 2
+		local lastBottomY = Menu.height / 2 - header.height / 2
+		
+		for _,item in ipairs(Menu.items) do
+
+			local itemButton = newMenuItem( item, lastBottomY, lastTopY )
+
+			if ( item.position == "top" ) then
+				lastTopY = lastTopY + itemButton.height
+			else
+				lastBottomY = lastBottomY - itemButton.height				
+			end
+
+			group:insert( itemButton )
+		end
+	end
+
 end
 
 
 function Menu.init( opt )
-
-	if (header.bottom) then
-		Menu.height = display.actualContentHeight - header.bottom
-	end
 
 	if (opt) then
 		Menu.width = opt.width or Menu.width
@@ -58,76 +139,14 @@ function Menu.init( opt )
 		group = display.newGroup( )
 	end
 
-	if (not shadeBox) then
-		local x = display.contentCenterX
-		local y = display.screenOriginY + header.bottom + Menu.height / 2
-
-		shadeBox = display.newRect( x, y, display.actualContentWidth, Menu.height )
-		shadeBox.fill = { 0, 0, 0, 0.7 }
-		shadeBox.alpha = 0
-		shadeBox:addEventListener( "touch", onShadeBoxTouch )
-	end
-
-	if (not box) then
-		box = display.newRect( 0, 0, Menu.width, Menu.height)
-		box.fill = Menu.color
-		box:addEventListener( "touch", onBoxTouch )
-
-		group:insert( box )
-	end
-
-	if (Menu.items) then
-		-- based on group box
-		local lastTopY = -Menu.height / 2 + header.height / 2
-		local lastBottomY = Menu.height / 2 - header.height / 2
-		
-		for _,item in ipairs(Menu.items) do
-
-			local itemButton = flatButton.newButton {
-				text = item.text,
-				textSize = Menu.textSize,
-				textColor = item.textColor or Menu.textColor,
-
-				color = item.color or Menu.color,
-				iconName = item.iconName,
-				iconAlign = "left",
-
-				width = Menu.width,
-				height = item.height or header.height,
-				
-				y = item.position == "bottom" and lastBottomY or lastTopY,
-
-				sceneName = item.sceneName,
-				onClick = item.onClick,
-
-				onRelease = function ( event )
-					if ( event.target.sceneName ) then
-						composer.gotoScene( event.target.sceneName, { time = 500, event = "flip" } )
-					end
-
-					if ( event.target.onClick ) then
-						event.target.onClick( )
-					end
-
-					Menu:toggle( )
-				end
-			}
-
-			if ( item.position == "top" ) then
-				lastTopY = lastTopY + itemButton.height
-			else
-				lastBottomY = lastBottomY - itemButton.height				
-			end
-
-			group:insert( itemButton )
-		end
-	end
+	initShadeBox( )
+	initMenuBox( )
+	initMenuItems( )
 
 	group.x = -( display.screenOriginX + Menu.width )
-	group.y = display.screenOriginY + header.bottom + Menu.height / 2
+	group.y = header.bottom + Menu.height / 2
 
 	return Menu
-
 end
 
 local slideTime = 400
