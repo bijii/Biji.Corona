@@ -230,7 +230,7 @@ function header.show( )
 end
 
 function header.hide( )
-	local topy = header.top - math.abs(header.y)
+	local topy = header.top - header.height / 2
 
 	transition.to( group, { y = topy, effect = "slideUp" } )
 	header.isVisible = false
