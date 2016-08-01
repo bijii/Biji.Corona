@@ -5,7 +5,7 @@ local widget = require( "widget" )
 local control = require( "biji.control" )
 local logger = require( "biji.logger" )
 local flatColors = require( "biji.flatColors" )
-local theme = require( "biji.theme" )
+local theme = require( "theme" )
 
 local FlatButton = { }
 

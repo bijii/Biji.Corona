@@ -2,7 +2,7 @@
 local widget = require( "widget" )
 local control = require( "biji.control" )
 local header = require( "biji.header" )
-local theme = require( "biji.theme" )
+local theme = require( "theme" )
 
 local Notif = { }
 local text

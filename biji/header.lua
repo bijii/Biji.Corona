@@ -4,7 +4,7 @@ local control = require( "biji.control" )
 local flatColors = require( "biji.flatColors" )
 local flatButton = require( "biji.flatButton" )
 local logger = require( "biji.logger" )
-local theme = require( "biji.theme" )
+local theme = require( "theme" )
 
 local header = {
 	height = 40,

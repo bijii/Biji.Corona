@@ -5,7 +5,7 @@ local logger = require( "biji.logger" )
 local flatButton = require( "biji.flatButton" )
 local header = require( "biji.header" )
 local control = require( "biji.control" )
-local theme = require( "biji.theme" )
+local theme = require( "theme" )
 
 local Menu = {
 	width = 200,
