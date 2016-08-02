@@ -4,6 +4,7 @@ local logger = require( "biji.logger" )
 
 local Control = { }
 
+
 local controls = { }
 
 local nativeControls = { }
@@ -135,7 +136,7 @@ end
 
 function Control.fillWidth( object )
 	object.width = display.actualContentWidth
-	object.x = display.contentCenterX
+	object.x = display.screenOriginX + display.actualContentWidth / 2
 end
 
 
@@ -175,13 +176,5 @@ function Control.showNative( control )
 	control.isVisible = true
 end
 
-
-local function onSystemEvent( event )
-    if ( event.type == "applicationExit" ) then
-        Control.destroyAll( )
-    end
-end
-
-Runtime:addEventListener( "system", onSystemEvent )
 
 return Control

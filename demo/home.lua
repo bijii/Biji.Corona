@@ -46,6 +46,12 @@ function scene:create( event )
 				position = "top",
 			},
 			{
+				text = "Notification",
+				iconName = "info",
+				sceneName = "demo.notif",
+				position = "top",
+			},
+			{
 				text = "Logout",
 				iconName = "exit",
 				color = flatColors.shade( flatColors.nephritis, 0.2 ),
