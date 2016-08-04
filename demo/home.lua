@@ -11,18 +11,29 @@ local notif = require( "biji.notification" )
 local menu = require( "biji.menu" )
 local header = require( "biji.header" )
 local control = require( "biji.control" )
+local dialog = require( "biji.dialog" )
 
 -- ui
 
 -- local
 local function logout( )
-	notif.loading("Logging out...")
 
-	timer.performWithDelay( 1800, function ( )
-		notif.hide( )
-		header.hide( )
-		composer.gotoScene( "demo", { effect = "slideUp" } )
-	end )
+	dialog.show { 
+		text = "Logout now?",
+		buttons = { "yes", "no" },
+
+		onComplete = function ( event )
+			if (event.status == "yes") then
+				notif.loading("Logging out...")
+
+				timer.performWithDelay( 1800, function ( )
+					notif.hide( )
+					header.hide( )
+					composer.gotoScene( "demo", { effect = "slideUp" } )
+				end )
+			end
+		end
+	}
 end
 
 

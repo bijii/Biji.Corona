@@ -21,6 +21,20 @@ local Theme = {
 	buttonColor = flatColors.nephritis,
 	buttonTextColor = flatColors.white,
 	
+	dialogColor = flatColors.orange,
+	dialogTextColor = flatColors.black,
+
+	dialogButtonColors = {
+		ok = flatColors.nephritis,
+		cancel = flatColors.asbestos,
+		retry = flatColors.pomegranate,
+		yes = flatColors.nephritis,
+		no = flatColors.pomegranate,
+	},
+
+	contentFont = "fonts/Roboto-Regular",
+	titleFont = "fonts/Roboto-Light",
+	headerFont = "fonts/Fabrica",
 }
 
 display.setDefault( "background", unpack( flatColors.clouds ) )

@@ -12,6 +12,7 @@ local notif = require( "biji.notification" )
 local menu = require( "biji.menu" )
 local control = require( "biji.control" )
 local flatButton = require( "biji.flatButton" )
+local dialog = require( "biji.dialog" )
 
 -- ui
 

@@ -2,6 +2,7 @@
 local composer = require( "composer" )
 local logger = require( "biji.logger" )
 local control = require( "biji.control" )
+local dialog = require( "biji.dialog" )
 
 local S = { 
     
@@ -18,15 +19,17 @@ local function onKeyEvent( event )
         local currentSceneName = composer.getSceneName( "current" )
         local currentScene = composer.getScene( currentSceneName )
 
-        log("prev:", prevSceneName)
-        log("current:", currentSceneName)
-
-        if ( currentSceneName == S.loadScene ) then
+        if (dialog.isVisible) then
+            dialog.hide( )
+            return true
+        elseif ( currentSceneName == S.loadScene ) then
             native.requestExit( )
         else
             if ( composer.isOverlay ) then
                 composer.hideOverlay( "toBottom" )
-            else
+
+                return true
+            elseif ( currentScene ) then
                 local returnScene = currentScene.returnScene
 
                 if (returnScene) then
@@ -34,9 +37,9 @@ local function onKeyEvent( event )
                 else
                     composer.gotoScene( S.homeScene, { effect = "flip" } )
                 end
+
+                return true
             end
-            
-            return true
         end
 
     end

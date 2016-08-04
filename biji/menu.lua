@@ -8,7 +8,7 @@ local control = require( "biji.control" )
 local theme = require( "theme" )
 
 local Menu = {
-	width = 200,
+	width = display.actualContentWidth * 0.7,
 	height = display.actualContentHeight - header.height - display.topStatusBarContentHeight,
 	
 	color = theme.menuColor,

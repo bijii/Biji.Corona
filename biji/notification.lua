@@ -80,7 +80,7 @@ local function init( message )
 		
 		text = display.newText {
 			text = message,
-			font = "fonts/Roboto-Light",
+			font = theme.titleFont,
 			fontSize = fontSize,
 			align = "center",
 			height = boxHeight,

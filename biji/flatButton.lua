@@ -72,7 +72,7 @@ function FlatButton.newButton( opt )
 		labelAlign = opt.textAlign,
 		labelXOffset = textOffset,
 		
-		font = opt.textFont or "fonts/Roboto-Light.ttf",
+		font = opt.textFont or theme.titleFont,
 		fontSize = opt.textSize or 14,
 
 		-- onPress = opt.onPress,

@@ -5,6 +5,7 @@ local notif = require( "biji.notification" )
 local header = require( "biji.header" )
 local menu = require( "biji.menu" )
 local control = require( "biji.control" )
+local dialog = require( "biji.dialog" )
 
 local textField
 
@@ -160,13 +161,32 @@ function testText(  )
 	myText1.y = topAlignAxis
 end
 
+function dialogTest(  )
+	
+	dialog.show {
+		text = "Hello\nYohohoho",
+		buttons = { "ok", "cancel", "retry" },
+		onComplete = function ( event )
+			log(event.status)
+		end
+	}
+
+	timer.performWithDelay( 2000, function ( event )
+		-- dialog.hide( )
+
+	end )
+
+end
+
 function runTest(  )
 
-	textFieldTest( )
-	buttonTest( )
+	-- textFieldTest( )
+	-- buttonTest( )
 	-- headerTest( )
 	menuTest( )
 
 	-- testText( )
-	
+	dialogTest( )
+	dialogTest( )
+
 end

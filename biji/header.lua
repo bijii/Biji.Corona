@@ -124,7 +124,7 @@ local function initHeaderBox( )
 			text = header.text,
 			align = "center",
 			width = header.width,
-			font = "fonts/Fabrica",
+			font = theme.headerFont,
 			fontSize = header.textSize
 		}
 
