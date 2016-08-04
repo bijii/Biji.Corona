@@ -24,7 +24,6 @@ local status = nil
 
 local function onShadeBoxTouch( event )
 	if ( event.phase == "ended" ) then
-		status = "cancel"
 		D.hide( )
 	end
 
@@ -41,7 +40,7 @@ local function initBoxes( )
 		shadeBox = display.newRect( cX, cY, display.actualContentWidth, display.actualContentHeight )
 
 		shadeBox.fill = { 0, 0, 0, 0.7 }
-		shadeBox.alpha = 0
+		shadeBox.isVisible = false
 		shadeBox:addEventListener( "touch", onShadeBoxTouch )
 	end
 
@@ -128,7 +127,7 @@ local function init( opt )
 	opt.buttons = opt.buttons or { "ok" }
 
 	onComplete = opt.onComplete
-	status = "cancel"
+	status = nil
 
 	initBoxes( )
 
@@ -148,8 +147,8 @@ function D.show( opt )
 
 	local dialogY = display.screenOriginY + display.actualContentHeight / 2
 
-	transition.to( shadeBox, { alpha = 1, time = 250 } )
-	transition.to( group, { y = dialogY, effect = "slideUp", easing = "outQuint", time = 150 } )
+	shadeBox.isVisible = true
+	transition.to( group, { y = dialogY, time = 200 } )
 
 	D.isVisible = true
 end
@@ -162,8 +161,8 @@ function D.hide( )
 
 	local dialogY = display.screenOriginY + display.actualContentHeight + display.actualContentHeight / 2
 
-	transition.to( shadeBox, { alpha = 0, time = 250 } )
-	transition.to( group, { y = dialogY, effect = "slideDown", easing = "outQuint", time = 150 } )
+	shadeBox.isVisible = false
+	transition.to( group, { y = dialogY, time = 200 } )
 
 	D.isVisible = false
 
