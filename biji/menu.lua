@@ -26,6 +26,30 @@ local shadeBox
 local group
 
 
+local swipeThresh = 100
+local minXStart = 75
+
+function onScreenTouched( event )
+	local phase = event.phase
+
+	if (phase == "ended" or phase == "cancelled") then
+		local distance = event.x - event.xStart
+
+		if (distance > swipeThresh) then
+			if (event.xStart < minXStart and header.isVisible and not Menu.isVisible) then
+				Menu.toggle( )
+			end
+		elseif (distance < -swipeThresh) then
+			if (Menu.isVisible) then
+				Menu.toggle( )
+			end
+		end
+	end
+
+	return true
+end
+
+
 local function onShadeBoxTouch( event )
 	if (event.phase == "ended") then
 		Menu:toggle( )
@@ -34,7 +58,6 @@ local function onShadeBoxTouch( event )
 	return true
 end
 
-
 local function initShadeBox(  )
 	if (not shadeBox) then
 		local x = display.contentCenterX
@@ -42,6 +65,7 @@ local function initShadeBox(  )
 
 		shadeBox = display.newRect( x, y, display.actualContentWidth, Menu.height )
 		shadeBox:addEventListener( "touch", onShadeBoxTouch )
+		shadeBox:addEventListener( "touch", onScreenTouched )
 	end	
 
 	shadeBox.fill = { 0, 0, 0, 0.7 }
@@ -52,7 +76,7 @@ end
 local function initMenuBox(  )
 	if (not box) then
 		box = display.newRect( 0, 0, Menu.width, Menu.height)
-		box:addEventListener( "touch", function ( event ) return true end )
+		box:addEventListener( "touch", onScreenTouched )
 
 		group:insert( box )
 	end
@@ -158,7 +182,7 @@ function Menu:toggle( )
 	local boxX
 	local shadeBoxAlpha
 
-	if (self.isVisible) then
+	if (Menu.isVisible) then
 		boxX = -(display.screenOriginX + Menu.width)
 		shadeBoxAlpha = 0
 		control.showNatives( )
@@ -170,7 +194,7 @@ function Menu:toggle( )
 
 	transition.to( group, { time = slideTime, x = boxX, transition = easing.outQuint } )
 
-	self.isVisible = not self.isVisible
+	Menu.isVisible = not Menu.isVisible
 
 	transition.to( shadeBox, { time = slideTime / 2, alpha = shadeBoxAlpha } )
 end
@@ -186,5 +210,7 @@ function Menu:destroy( )
 	control.destroy( group )
 
 end
+
+Runtime:addEventListener("touch", onScreenTouched)
 
 return Menu
