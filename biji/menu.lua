@@ -21,6 +21,10 @@ local Menu = {
 	isVisible = false,
 }
 
+if (system.orientation ~= "portrait") then
+	Menu.width = display.actualContentHeight * 0.7
+end
+
 local box
 local shadeBox
 local group
