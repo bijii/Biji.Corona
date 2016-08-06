@@ -173,7 +173,7 @@ function header.init( option )
 	header.isVisible = false
 	
 	-- hide group
-	group.y = header.top - header.y
+	group.y = header.top - header.width
 end
 
 

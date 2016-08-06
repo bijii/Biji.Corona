@@ -3,7 +3,7 @@ local FlatColors = { }
 
 FlatColors["white"] 		= { 255 / 255, 255 / 255, 255 / 255, 1 }
 FlatColors["black"] 		= {   0 / 255,   0 / 255,   0 / 255, 1 }
-FlatColors["turqoise"] 		= {  26 / 255, 188 / 255, 156 / 255, 1 }
+FlatColors["turquoise"] 	= {  26 / 255, 188 / 255, 156 / 255, 1 }
 FlatColors["greensea"] 		= {  22 / 255, 160 / 255, 133 / 255, 1 }
 FlatColors["emerald"] 		= {  46 / 255, 204 / 255, 113 / 255, 1 }
 FlatColors["nephritis"] 	= {  39 / 255, 174 / 255,  96 / 255, 1 }

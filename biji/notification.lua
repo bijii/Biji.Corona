@@ -12,7 +12,7 @@ local spinner
 local shadeBox
 
 local boxHeight = 38
-local boxColor = theme.notifColor
+local boxColor = theme.notifInfoColor
 local fontSize = 16
 
 local spinnerOption = { 
@@ -164,14 +164,14 @@ local function show( message )
 end
 
 
-function Notif.showError( message )
+function Notif.error( message )
 	boxColor = theme.notifErrorColor
 	show( message )
 end
 
 
-function Notif.showInfo( message )
-	boxColor = theme.notifColor
+function Notif.info( message )
+	boxColor = theme.notifInfoColor
 	show( message )
 end
 

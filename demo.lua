@@ -20,7 +20,7 @@ local function onLogin( event )
 	notif.loading( "Logging in..." )
 	
 	timer.performWithDelay( 2000, function ( event )
-		notif.showInfo( "Logged in!" )
+		notif.info( "Logged in!" )
 
 		timer.performWithDelay( 1800, function ( event )
 			composer.gotoScene( "demo.home", { effect = "slideDown" } )	

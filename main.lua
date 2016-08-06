@@ -9,7 +9,7 @@ display.setStatusBar( display.DefaultStatusBar )
 widget.setTheme( "widget_theme_android_holo_light" )
 composer.gotoScene( "demo", { effect = "slideUp" } )
 
-sceneHandler.init( )
+sceneHandler.init( { startScene = "demo", homeScene = "demo.home" } )
 
 -- require( "test" )
 -- runTest( )

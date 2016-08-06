@@ -1,12 +1,14 @@
 
+local widget = require( "widget" )
 local composer = require( "composer" )
 local logger = require( "biji.logger" )
 local control = require( "biji.control" )
 local dialog = require( "biji.dialog" )
+local theme = require( "theme" )
 
 local S = { 
     
-    loadScene = "demo",
+    startScene = "demo",
     homeScene = "demo.home",
 
 }
@@ -22,7 +24,7 @@ local function onKeyEvent( event )
         if (dialog.isVisible) then
             dialog.hide( )
             return true
-        elseif ( currentSceneName == S.loadScene ) then
+        elseif ( currentSceneName == S.startScene ) then
             native.requestExit( )
         else
             if ( composer.isOverlay ) then
@@ -55,9 +57,22 @@ local function onSystemEvent( event )
 end
 
 
-function S.init(  )
+function S.init( opt )
+
+    if (opt) then
+        S.startScene = opt.startScene or S.startScene
+        S.homeScene = opt.homeScene or S.homeScene
+    end
+
+    display.setStatusBar( display.DefaultStatusBar )
+    widget.setTheme( "widget_theme_android_holo_light" )
+    display.setDefault( "background", unpack( theme.backgroundColor ) )
+
     Runtime:addEventListener( "system", onSystemEvent )
     Runtime:addEventListener( "key", onKeyEvent )
+
+    composer.gotoScene( opt.startScene, { effect = "fade" } )
+
 end
 
 

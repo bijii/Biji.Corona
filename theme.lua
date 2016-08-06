@@ -13,7 +13,7 @@ local Theme = {
 	menuTextColor = flatColors.white,
 	menuShadowColor = flatColors.midnightblue,
 
-	notifColor = flatColors.pumpkin,
+	notifInfoColor = flatColors.pumpkin,
 	notifLoadingColor = flatColors.belizehole,
 	notifErrorColor = flatColors.pomegranate,
 	notifTextColor = flatColors.clouds,
@@ -36,7 +36,5 @@ local Theme = {
 	titleFont = "fonts/Roboto-Light",
 	headerFont = "fonts/Fabrica",
 }
-
-display.setDefault( "background", unpack( flatColors.clouds ) )
 
 return Theme
