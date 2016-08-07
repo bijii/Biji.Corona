@@ -13,7 +13,8 @@ local Theme = {
 	menuTextColor = flatColors.white,
 	menuShadowColor = flatColors.midnightblue,
 
-	notifInfoColor = flatColors.pumpkin,
+	notifInfoColor = flatColors.nephritis,
+	notifWarningColor = flatColors.orange,
 	notifLoadingColor = flatColors.belizehole,
 	notifErrorColor = flatColors.pomegranate,
 	notifTextColor = flatColors.clouds,

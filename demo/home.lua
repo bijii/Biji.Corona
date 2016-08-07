@@ -23,7 +23,7 @@ local function logout( )
 		buttons = { "yes", "no" },
 
 		onComplete = function ( event )
-			if (event.status == "yes") then
+			if (event.result == "yes") then
 				notif.loading("Logging out...")
 
 				timer.performWithDelay( 1800, function ( )

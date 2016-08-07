@@ -175,6 +175,10 @@ function Notif.info( message )
 	show( message )
 end
 
+function Notif.warning( message )
+	boxColor = theme.notifWarningColor
+	show( message )
+end
 
 function Notif.loading( message )
 

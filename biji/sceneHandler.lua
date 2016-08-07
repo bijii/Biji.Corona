@@ -58,6 +58,14 @@ local function onSystemEvent( event )
     end
 end
 
+function S.gotoNextScene( nextSceneName )
+    local prevSceneName = composer.getSceneName( "current" )
+
+    composer.gotoScene( nextSceneName, { effect = "slideLeft", time = 250 } )
+    
+    local nextScene = composer.getScene( nextSceneName )
+    nextScene.returnScene = prevSceneName
+end
 
 function S.init( opt )
 
