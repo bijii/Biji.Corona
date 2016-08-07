@@ -164,6 +164,20 @@ function Control.getUnderlinePos( object )
 	return { x1, y2, x2, y2 }
 end
 
+function Control.setUnderline ( text, color )
+	local pos = Control.getUnderlinePos( text )
+	local line = display.newLine( unpack( pos ) )
+	line.fill = color
+
+	if ( text.underline ) then
+		display.remove( text.underline )
+		text.underline:removeSelf( )
+	end
+
+	log(pos)
+
+	text.underline = line
+end
 
 function Control.hideNatives( )
 	for i=1,#nativeControls do
