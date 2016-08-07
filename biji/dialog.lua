@@ -19,7 +19,7 @@ local buttonHeight = 35
 local buttonWidth = 90
 
 local onComplete = nil
-local status = nil
+local result = nil
 
 
 local function onShadeBoxTouch( event )
@@ -31,7 +31,7 @@ local function onShadeBoxTouch( event )
 end
 
 
-local function initBoxes( )
+local function initBoxes( opt )
 	
 	local cX = display.screenOriginX + display.actualContentWidth / 2
 	local cY = display.screenOriginY + display.actualContentHeight / 2
@@ -57,11 +57,11 @@ local function initBoxes( )
 			align = "center",
 		}
 
-		text:setFillColor( theme.dialogTextColor )
+		text:setFillColor( opt.textColor )
 
 		box = display.newRect( 0, 0, width, text.height )
 
-		box.fill = theme.dialogColor
+		box.fill = opt.color
 		box:addEventListener( "touch", function ( event ) return true end )
 
 		group:insert( box )
@@ -77,7 +77,7 @@ local buttons = { }
 local buttonGroup
 
 local function onButtonRelease( event )
-	status = event.target:getLabel( ):lower( )
+	result = event.target:getLabel( ):lower( )
 	D.hide( )
 end
 
@@ -125,11 +125,13 @@ local function init( opt )
 	opt = opt or { }
 	opt.text = opt.text or ""
 	opt.buttons = opt.buttons or { "ok" }
+	opt.color = opt.color or theme.dialogColor
+	opt.textColor = opt.textColor or theme.dialogTextColor
 
 	onComplete = opt.onComplete
-	status = nil
+	result = nil
 
-	initBoxes( )
+	initBoxes( opt )
 
 	text.text = opt.text
 	box.height = 20 + text.height + 10 + buttonHeight + 20
@@ -167,7 +169,7 @@ function D.hide( )
 	D.isVisible = false
 
 	if (onComplete) then
-		onComplete( { status = status } )
+		onComplete( { result = result } )
 	end
 end
 

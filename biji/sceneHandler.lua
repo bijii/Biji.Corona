@@ -11,6 +11,8 @@ local S = {
     startScene = "demo",
     homeScene = "demo.home",
 
+    startEffect = "fade",
+
 }
 
 local function onKeyEvent( event )
@@ -35,9 +37,9 @@ local function onKeyEvent( event )
                 local returnScene = currentScene.returnScene
 
                 if (returnScene) then
-                    composer.gotoScene( lastScene, { effect = "slideRight" } )
+                    composer.gotoScene( returnScene, { effect = "slideRight", time = 250 } )
                 else
-                    composer.gotoScene( S.homeScene, { effect = "flip" } )
+                    composer.gotoScene( S.homeScene, { effect = "flip", time = 250 } )
                 end
 
                 return true
@@ -62,6 +64,7 @@ function S.init( opt )
     if (opt) then
         S.startScene = opt.startScene or S.startScene
         S.homeScene = opt.homeScene or S.homeScene
+        S.startEffect = opt.startEffect or S.startEffect
     end
 
     display.setStatusBar( display.DefaultStatusBar )
@@ -71,7 +74,7 @@ function S.init( opt )
     Runtime:addEventListener( "system", onSystemEvent )
     Runtime:addEventListener( "key", onKeyEvent )
 
-    composer.gotoScene( opt.startScene, { effect = "fade" } )
+    composer.gotoScene( opt.startScene, { effect = S.startEffect } )
 
 end
 

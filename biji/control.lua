@@ -46,9 +46,25 @@ function Control.registerNative( control )
 		local index = #nativeOverBoxes + 1
 
 		local box = display.newRect( control.x, control.y, control.width, control.height )
-		local text = display.newText( control.text, control.x, control.y, control.width - 20, 0, control.font, control.fontSize )
+		local text = display.newText{ 
+			text = control.text, 
+			x = control.x, 
+			y = control.y, 
+			width = control.width - 20, 
+			height = 0, 
+			font = control.font, 
+			fontSize = control.fontSize,
+			align = control.align
+		}
 
 		text:setFillColor( 0 )
+
+		if ( control.isSecure ) then
+			text.text = ""			
+		end
+
+		box.isVisible = false
+		text.isVisible = false
 
 		nativeOverBoxes[index] = box
 		nativeOverTexts[index] = text
@@ -140,6 +156,15 @@ function Control.fillWidth( object )
 end
 
 
+function Control.getUnderlinePos( object )
+	local x1 = object.x - object.width / 2
+	local x2 = object.x + object.width / 2
+	local y2 = object.y + object.height / 2
+
+	return { x1, y2, x2, y2 }
+end
+
+
 function Control.hideNatives( )
 	for i=1,#nativeControls do
 		local control = nativeControls[i]
@@ -158,9 +183,14 @@ end
 
 function Control.hideNative( control )
 	if ( control.overBox ) then
-		control.overText.text = control.text
-		control.overText.isVisible = true
-		control.overBox.isVisible = true
+		if ( not control.isSecure ) then
+			control.overText.text = control.text
+		end
+
+		if ( control.isVisible ) then
+			control.overText.isVisible = true
+			control.overBox.isVisible = true
+		end
 	end
 
 	control.isVisible = false

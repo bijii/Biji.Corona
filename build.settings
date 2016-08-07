@@ -18,8 +18,8 @@ settings =
 	excludeFiles =
 	{
 		-- Include only the necessary icon files on each platform
-		iphone = { "icons/Icon-*dpi.png", },
-		android = { "icons/Icon.png", "icons/Icon-Small-*.png", "icons/Icon*@2x.png", },
+		iphone = { "Icon-*dpi.png", },
+		android = { "Icon.png", "Icon-Small-*.png", "Icon*@2x.png", },
 	},
 
 	--
@@ -35,23 +35,23 @@ settings =
 
 			CFBundleIconFiles =
 			{
-				"icons/Icon.png",
-				"icons/Icon@2x.png",
-				"icons/Icon-167.png",
-				"icons/Icon-60.png",
-				"icons/Icon-60@2x.png",
-				"icons/Icon-60@3x.png",
-				"icons/Icon-72.png",
-				"icons/Icon-72@2x.png",
-				"icons/Icon-76.png",
-				"icons/Icon-76@2x.png",
-				"icons/Icon-Small.png",
-				"icons/Icon-Small@2x.png",
-				"icons/Icon-Small@3x.png",
-				"icons/Icon-Small-40.png",
-				"icons/Icon-Small-40@2x.png",
-				"icons/Icon-Small-50.png",
-				"icons/Icon-Small-50@2x.png",
+				"Icon.png",
+				"Icon@2x.png",
+				"Icon-167.png",
+				"Icon-60.png",
+				"Icon-60@2x.png",
+				"Icon-60@3x.png",
+				"Icon-72.png",
+				"Icon-72@2x.png",
+				"Icon-76.png",
+				"Icon-76@2x.png",
+				"Icon-Small.png",
+				"Icon-Small@2x.png",
+				"Icon-Small@3x.png",
+				"Icon-Small-40.png",
+				"Icon-Small-40@2x.png",
+				"Icon-Small-50.png",
+				"Icon-Small-50@2x.png",
 			},
 
 			--[[
