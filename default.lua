@@ -13,6 +13,8 @@ local menu = require( "biji.menu" )
 local control = require( "biji.control" )
 local flatButton = require( "biji.flatButton" )
 local dialog = require( "biji.dialog" )
+local sceneHandler = require( "biji.sceneHandler" )
+local theme = require( "theme" )
 
 -- ui
 
@@ -51,6 +53,8 @@ end
 
 function scene:destroy( event )
 	local sceneGroup = self.view
+
+	control.destroy(sceneGroup)
 
 	scene:removeEventListener( "create" )
 	scene:removeEventListener( "show" )

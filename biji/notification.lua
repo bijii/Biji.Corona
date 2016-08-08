@@ -13,7 +13,7 @@ local shadeBox
 
 local boxHeight = 38
 local boxColor = theme.notifInfoColor
-local fontSize = 16
+local fontSize = 18
 
 local spinnerOption = { 
 	width = 16, 
@@ -24,7 +24,7 @@ local spinnerOption = {
 }
 
 local slideTime = 100
-local slideDelay = 2000
+local slideDelay = 1500
 
 local showing
 local loading
@@ -131,8 +131,6 @@ end
 
 
 local function show( message )
-
-	control.hideNatives( )
 
 	showing = true
 	loading = false

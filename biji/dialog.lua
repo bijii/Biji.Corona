@@ -144,6 +144,7 @@ end
 function D.show( opt )
 	init( opt )
 
+	control.hideNatives( )
 	shadeBox:toFront( )
 	group:toFront( )
 
@@ -167,6 +168,7 @@ function D.hide( )
 	transition.to( group, { y = dialogY, time = 200 } )
 
 	D.isVisible = false
+	control.showNatives( )
 
 	if (onComplete) then
 		onComplete( { result = result } )
