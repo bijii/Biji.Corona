@@ -22,6 +22,8 @@ local function onButtonEvent( event )
 			event.target.icon:setFillColor( 0.7 )
 		end
 
+		event.target.pressed = true
+
 	elseif (event.phase == "ended") then
 
 		if (event.target.onButtonRelease) then
@@ -31,6 +33,8 @@ local function onButtonEvent( event )
 		if (event.target.icon) then
 			event.target.icon:setFillColor( 1 )
 		end
+
+		event.target.pressed = false
 
 	end
 
@@ -109,13 +113,13 @@ function FlatButton.newButton( opt )
 		end
 
 		button.icon = icon
-		button.text = opt.text
-		button.sceneName = opt.sceneName
-		button.onClick = opt.onClick
 
 		group:insert( icon )
 		control.register( button )
 	end
+
+	button.text = opt.text
+	button.opt = opt
 
 	control.register( group )
 

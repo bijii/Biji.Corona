@@ -156,9 +156,6 @@ local function show( message )
 	transition.to( text, { time = slideTime, delay = slideDelay, y = boxYHide, onComplete = function(e) showing = false end } )
 	transition.to( box, { time = slideTime, delay = slideDelay, y = boxYHide, onComplete = function(e) showing = false end } )
 
-	timer.performWithDelay( slideDelay, function(e) shadeBox.isVisible = false end )
-	timer.performWithDelay( slideDelay, control.showNatives )
-
 end
 
 

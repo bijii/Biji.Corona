@@ -1,15 +1,12 @@
 
-local display = require( "display" )
-local widget = require( "widget" )
-local composer = require( "composer" )
-
 local sceneHandler = require("biji.sceneHandler")
 
-display.setStatusBar( display.DefaultStatusBar )
-widget.setTheme( "widget_theme_android_holo_light" )
-composer.gotoScene( "demo", { effect = "slideUp" } )
+local opt = { 
+	startScene = "demo", 
+	homeScene = "demo.home" 
+}
 
-sceneHandler.init( { startScene = "demo", homeScene = "demo.home" } )
+sceneHandler.init( opt )
 
--- require( "test" )
--- runTest( )
+-- require( "biji.test" )
+-- networkTest( )

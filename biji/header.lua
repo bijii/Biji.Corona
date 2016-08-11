@@ -26,6 +26,8 @@ local header = {
 
 	onBack = nil,
 	onNext = nil,
+	onRefresh = nil,
+	onInfo = nil,
 }
 
 local group
@@ -38,6 +40,7 @@ local menuButton
 local infoButton
 local backButton
 local nextButton
+local refreshButton
 
 function header.update( )
 	control:fillWidth( group )
@@ -67,6 +70,20 @@ local function onNextButtonRelease(  )
 end
 
 
+local function onInfoButtonRelease(  )
+	if (header.onInfo) then
+		header.onInfo( )
+	end
+end
+
+
+local function onRefreshButtonRelease(  )
+	if (header.onRefresh) then
+		header.onRefresh( )
+	end
+end
+
+
 local function initButtons( )
 	local option = {
 		width = header.height,
@@ -90,12 +107,24 @@ local function initButtons( )
 	option.onRelease = onNextButtonRelease
 	nextButton = flatButton.newButton( option )
 
-	group:insert( menuButton ) 
+	option.iconName = "info"
+	option.onRelease = onInfoButtonRelease
+	infoButton = flatButton.newButton( option )
+
+	option.iconName = "refresh"
+	option.onRelease = onRefreshButtonRelease
+	refreshButton = flatButton.newButton( option )
+
+	group:insert( menuButton )
 	group:insert( backButton )
 	group:insert( nextButton )
+	group:insert( infoButton )
+	group:insert( refreshButton )
 
 	backButton.isVisible = false
 	nextButton.isVisible = false
+	infoButton.isVisible = false
+	refreshButton.isVisible = false
 end
 
 
@@ -146,8 +175,10 @@ function header.init( option )
 		header.textSize = option.textSize or header.textSize
 		header.textColor = option.textColor or header.textColor
 
-		header.onBack = option.onBack or nil
-		header.onNext = option.onNext or nil
+		header.onBack = option.onBack
+		header.onNext = option.onNext
+
+		header.menu = option.menu
 	end
 
 	-- init group
@@ -171,7 +202,7 @@ function header.init( option )
 	header.bottom = display.screenOriginY + display.topStatusBarContentHeight + header.height
 
 	header.isVisible = false
-	
+
 	-- hide group
 	group.y = header.top - header.width
 end
@@ -199,6 +230,14 @@ end
 
 function header.hideBackButton( )
 	backButton.isVisible = false
+end
+
+function header.showRefreshButton( )
+	refreshButton.isVisible = true
+end
+
+function header.hideRefreshButton( )
+	refreshButton.isVisible = false
 end
 
 

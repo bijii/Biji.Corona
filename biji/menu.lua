@@ -15,6 +15,7 @@ local Menu = {
 	
 	textSize = 18,
 	textColor = theme.menuTextColor,
+	textAlign = "center",
 
 	items = nil,
 
@@ -90,12 +91,12 @@ end
 
 
 local function onMenuItemRelease( event )
-	if ( event.target.sceneName ) then
-		composer.gotoScene( event.target.sceneName, { time = 500, event = "flip" } )
+	if ( event.target.opt.sceneName and event.target.pressed ) then
+		composer.gotoScene( event.target.opt.sceneName, { time = 250, effect = "slideLeft" } )
 	end
 
-	if ( event.target.onClick ) then
-		event.target.onClick( )
+	if ( event.target.opt.onItemRelease and event.target.pressed ) then
+		event.target.opt.onItemRelease( )
 	end
 
 	Menu:toggle( )
@@ -109,6 +110,7 @@ local function newMenuItem( item, lastBottomY, lastTopY )
 		text = item.text,
 		textSize = Menu.textSize,
 		textColor = item.textColor or Menu.textColor,
+		textAlign = item.textAlign or Menu.textAlign,
 
 		color = item.color or Menu.color,
 		iconName = item.iconName,
@@ -120,9 +122,9 @@ local function newMenuItem( item, lastBottomY, lastTopY )
 		y = item.position == "bottom" and lastBottomY or lastTopY,
 
 		sceneName = item.sceneName,
-		onClick = item.onClick,
+		onItemRelease = item.onRelease,
 
-		onRelease = onMenuItemRelease
+		onRelease = onMenuItemRelease,
 	}
 
 	return itemButton
@@ -139,6 +141,8 @@ local function initMenuItems(  )
 		for _,item in ipairs(Menu.items) do
 
 			local itemButton = newMenuItem( item, lastBottomY, lastTopY )
+
+			item.position = item.position or "top"
 
 			if ( item.position == "top" ) then
 				lastTopY = lastTopY + itemButton.height
@@ -161,6 +165,7 @@ function Menu.init( opt )
 		Menu.items = opt.items
 		Menu.textSize = opt.textSize or Menu.textSize
 		Menu.textColor = opt.textColor or Menu.textColor
+		Menu.textAlign = opt.textAlign or Menu.textAlign
 	end
 
 	if (not group) then

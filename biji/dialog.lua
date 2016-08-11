@@ -57,7 +57,7 @@ local function initBoxes( opt )
 			align = "center",
 		}
 
-		text:setFillColor( opt.textColor )
+		text:setFillColor( unpack( opt.textColor ) )
 
 		box = display.newRect( 0, 0, width, text.height )
 
@@ -90,6 +90,7 @@ local function initButtons( buttonNames )
 	end
 
 	local x = 0
+	local visibleButtons = 0
 
 	for i=1,#buttonNames do
 		local name = buttonNames[i]
@@ -112,10 +113,11 @@ local function initButtons( buttonNames )
 		buttons[name].x = x 
 
 		x = x + buttonWidth + 10
+		visibleButtons = visibleButtons + 1
 	end
 
 	-- first button become 0,0, only calc the next for reposition
-	buttonGroup.x = -((buttonGroup.numChildren - 1) * (buttonWidth + 10) / 2)
+	buttonGroup.x = -((visibleButtons - 1) * (buttonWidth + 10) / 2)
 	buttonGroup.y = box.height / 2 - 35 / 2 - 10
 
 end

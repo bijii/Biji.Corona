@@ -15,11 +15,11 @@ local S = {
 
 }
 
+
 local function onKeyEvent( event )
 
     if ( event.keyName == "back" and event.phase == "up" ) then
 
-        local prevSceneName = composer.getSceneName( "previous" )
         local currentSceneName = composer.getSceneName( "current" )
         local currentScene = composer.getScene( currentSceneName )
 
@@ -28,24 +28,18 @@ local function onKeyEvent( event )
             return true
         elseif ( currentSceneName == S.startScene ) then
             native.requestExit( )
-        else
-            if ( composer.isOverlay ) then
-                composer.hideOverlay( "toBottom" )
+        elseif ( currentScene ) then
 
-                return true
-            elseif ( currentScene ) then
-                local returnScene = currentScene.returnScene
+            local returnSceneName = currentScene.returnSceneName
 
-                if (returnScene) then
-                    composer.gotoScene( returnScene, { effect = "slideRight", time = 250 } )
-                else
-                    composer.gotoScene( S.homeScene, { effect = "flip", time = 250 } )
-                end
-
-                return true
+            if ( returnSceneName ) then
+                composer.gotoScene( returnSceneName, { effect = "slideRight", time = 250 } )
+            elseif ( currentSceneName ~= S.homeScene ) then
+                composer.gotoScene( S.homeScene, { effect = "slideRight", time = 250 } )
             end
-        end
 
+            return true
+        end
     end
 
     return false
@@ -58,14 +52,19 @@ local function onSystemEvent( event )
     end
 end
 
+
 function S.gotoNextScene( nextSceneName )
     local prevSceneName = composer.getSceneName( "current" )
 
     composer.gotoScene( nextSceneName, { effect = "slideLeft", time = 250 } )
     
-    local nextScene = composer.getScene( nextSceneName )
-    nextScene.returnScene = prevSceneName
+    timer.performWithDelay( 1000, function ( event )
+        local nextScene = composer.getScene( nextSceneName )
+
+        nextScene.returnScene = prevSceneName
+    end )
 end
+
 
 function S.init( opt )
 
