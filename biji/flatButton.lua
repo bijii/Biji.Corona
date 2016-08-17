@@ -34,6 +34,12 @@ local function onButtonEvent( event )
 			event.target.icon:setFillColor( 1 )
 		end
 
+		local tabbar = event.target.tabbar
+
+		if (tabbar) then
+			tabbar.setFocus( event.target.text )
+		end
+
 		event.target.pressed = false
 
 	end
@@ -89,6 +95,14 @@ function FlatButton.newButton( opt )
 
 	button.onButtonPress = opt.onPress
 	button.onButtonRelease = opt.onRelease
+	
+	group.button = button
+
+	group.setColor = function ( color, overColor )
+		overColor = overColor or flatColors.shade( color )
+
+		group.button.fillColor = { default = fillColor, over = overColor }
+	end
 
 	group:insert( button )
 	control.register( button )

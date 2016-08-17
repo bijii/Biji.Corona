@@ -5,6 +5,7 @@ local logger = require( "biji.logger" )
 local flatButton = require( "biji.flatButton" )
 local header = require( "biji.header" )
 local control = require( "biji.control" )
+local sceneHandler = require( "biji.sceneHandler" )
 local theme = require( "theme" )
 
 local Menu = {
@@ -92,7 +93,13 @@ end
 
 local function onMenuItemRelease( event )
 	if ( event.target.opt.sceneName and event.target.pressed ) then
-		composer.gotoScene( event.target.opt.sceneName, { time = 250, effect = "slideLeft" } )
+		local effect = "slideLeft"
+
+		if ( event.target.opt.sceneName == sceneHandler.homeScene ) then
+			effect = "slideRight"
+		end
+
+		composer.gotoScene( event.target.opt.sceneName, { time = 250, effect = effect } )
 	end
 
 	if ( event.target.opt.onItemRelease and event.target.pressed ) then

@@ -39,11 +39,19 @@ function Control.registerNative( control )
 	if ( not control.overBox ) then
 		local index = #nativeOverBoxes + 1
 
-		local box = display.newRect( control.x, control.y, control.width, control.height )
+		local x = control.x
+		local y = control.y
+
+		-- if ( control.group ) then
+		-- 	x = x + control.group.x
+		-- 	y = y + control.group.y
+		-- end
+
+		local box = display.newRect( x, y, control.width, control.height )
 		local text = display.newText{ 
 			text = control.text, 
-			x = control.x, 
-			y = control.y, 
+			x = x, 
+			y = y, 
 			width = control.width - 20, 
 			height = 0, 
 			font = control.font, 

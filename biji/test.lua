@@ -1,6 +1,7 @@
 
 local display = require( "display" )
 
+local grid = require( "biji.gridView" )
 
 function screenTest( )
 	
@@ -28,5 +29,43 @@ function networkTest( onComplete )
 
 		onComplete( event )
 	end )
+
+end
+
+function gridTest(  )
+	
+	local columns = {
+		{ 
+			title = "NO", 
+			width = 50,
+			align = "center",
+		},
+		{ 
+			title = "NAME", 
+			width = 200,
+		},
+		{ 
+			title = "SALARY", 
+			width = 100,
+			align = "right",
+			isNumber = true,
+		},
+	}
+
+	local gridview = grid.newGridView {
+		x = 160,
+		y = 130,
+		width = 200,
+		height = 300,
+		columns = columns,
+	}
+
+	local rows = {
+		{ 1, "M. Dedi Rudianto", 9000 },
+		{ 2, "XXXXX XXXXXX XXX", 10000 },
+		{ 3, "KJKI DFJKD F", 100 },
+	}
+
+	gridview.insertRows( rows )
 
 end
