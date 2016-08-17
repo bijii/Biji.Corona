@@ -1,5 +1,6 @@
 
 local display = require( "display" )
+local widget = require( "widget" )
 
 local grid = require( "biji.gridView" )
 
@@ -35,16 +36,16 @@ end
 function gridTest(  )
 	
 	local columns = {
-		{ 
+		no = { 
 			title = "NO", 
 			width = 50,
 			align = "center",
 		},
-		{ 
+		name = { 
 			title = "NAME", 
 			width = 200,
 		},
-		{ 
+		salary = { 
 			title = "SALARY", 
 			width = 100,
 			align = "right",
@@ -61,11 +62,12 @@ function gridTest(  )
 	}
 
 	local rows = {
-		{ 1, "M. Dedi Rudianto", 9000 },
-		{ 2, "XXXXX XXXXXX XXX", 10000 },
-		{ 3, "KJKI DFJKD F", 100 },
+		{ no = 1, name = "M. Dedi Rudianto", salary = 9000 },
+		{ no = 2, name = "XXXXX XXXXXX XXX", salary = 10000 },
+		{ no = 3, name = "KJKI DFJKD F", salary = 100 },
 	}
 
+	gridview.deleteAllRows( )
 	gridview.insertRows( rows )
 
 end

@@ -14,17 +14,17 @@ local columnSpace = 10
 function onTableViewRowRender( event )
 		
 	local row = event.row
-	local params = row.params
 	local opt = event.target.opt
+	local params = row.params
+	local columns = opt.columns
 	local y = row.contentHeight / 2
 
-	local lastX = 0
+	local lastX = columnSpace
 
-	-- log(params)
+	for field,col in spairs(columns, function(t, a, b) return t[a].id < t[b].id end ) do
+		-- log(field, col)
+		-- print(field)
 
-	for i=1,#params do
-		
-		local col = opt.columns[i]
 		local x = lastX + col.width / 2
 		
 		lastX = x + col.width / 2 + columnSpace
@@ -33,28 +33,31 @@ function onTableViewRowRender( event )
 		local fontSize = opt.rowTextSize
 		local color = opt.rowTextColor
 		local align = col.align or "left"
-		local text = params[i]
+		local content = params[field]
 
 		if ( row.isCategory ) then
 			font = theme.titleFont
 			fontSize = opt.headerTextSize
 			color = opt.headerTextColor
 			align = "center"
+			content = col.title
 		end
 
+		log( field, content )
+
 		if ( col.isNumber and not row.isCategory ) then
-			text = tonumber( text )
+			content = tonumber( content )
 			
-			if (text) then 
-				text = tostring( format_num( text, 0)) 
+			if (content) then 
+				content = tostring( format_num( content, 0)) 
 			else
-				text = text 
+				content = content 
 			end
 		end
 
 		local text = display.newText {
 			parent = row, 
-			text = text,
+			text = content,
 			x = x,
 			y = y,
 			width = col.width,
@@ -150,11 +153,9 @@ function G.newGridView( opt )
 	}
 
 	local gridWidth = columnSpace
-	local gridHeader = { }
 
-	for i,column in ipairs(opt.columns) do
+	for i,column in pairs(opt.columns) do
 		gridWidth = gridWidth + columnSpace + column.width
-		gridHeader[ #gridHeader + 1 ] = column.title
 	end
 
 	scrollview.gridWidth = gridWidth
@@ -162,11 +163,11 @@ function G.newGridView( opt )
 
 	local tableview = widget.newTableView {
 		width = gridWidth,
-		height = opt.height - 50,
+		height = opt.height,
 		x = scrollview.width / 2,
 		-- y = scrollview.height / 2,
 		backgroundColor = opt.backgroundColor,
-		onRowRender = onTableViewRowRender,
+		onRowRender = onTableViewRowRender,		
 		-- listener = onTableViewListener,
 
 		listener = function ( event )
@@ -214,10 +215,9 @@ function G.newGridView( opt )
 		rowHeight = opt.headerHeight,
 		rowColor = { default = opt.headerColor, over = opt.headerColor },
 		lineColor = opt.headerColor,
-		params = gridHeader
+		-- params = { no = "NO", name = "NAME", salary = "SALARY" }
 	}
 
-	-- rows
 	scrollview.insertRow = function ( row )
 		scrollview.tableview:insertRow {
 			isCategory = false,
@@ -233,6 +233,18 @@ function G.newGridView( opt )
 		for i=1,#rows do
 			scrollview.insertRow( rows[i] )
 		end
+	end
+
+	scrollview.deleteAllRows = function ( )
+		tableview:deleteAllRows( )
+
+		-- init column headers
+		tableview:insertRow {
+			isCategory = true,
+			rowHeight = opt.headerHeight,
+			rowColor = { default = opt.headerColor, over = opt.headerColor },
+			lineColor = opt.headerColor,
+		}
 	end
 
 	return scrollview

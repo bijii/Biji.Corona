@@ -36,6 +36,12 @@ local Theme = {
 	contentFont = "fonts/Roboto-Regular",
 	titleFont = "fonts/Roboto-Light",
 	headerFont = "fonts/Fabrica",
+
+	gridHeaderColor = flatColors.greensea, 
+	gridHeaderTextColor = flatColors.clouds, 
+	gridRowColor = flatColors.clouds, 
+	gridRowTextColor = flatColors.shade( flatColors.greensea ), 
+	 
 }
 
 return Theme
