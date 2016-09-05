@@ -1,10 +1,13 @@
 
 local widget = require( "widget" )
-local control = require( "biji.control" )
-local header = require( "biji.header" )
 local theme = require( "theme" )
 
-local Notif = { }
+local natives = require( "biji.native" )
+local header = require( "biji.header" )
+
+
+local N = { }
+
 local text
 local box
 local sheet
@@ -23,6 +26,7 @@ local spinnerOption = {
 	sheetContentHeight = 16,
 }
 
+
 local slideTime = 100
 local slideDelay = 1500
 
@@ -35,8 +39,7 @@ local function onShadeBoxTouch( event )
 end
 
 
-function Notif.update( )
-
+function N.update( )
 	if (not showing) then
 		local yPosHidden = -math.abs(display.screenOriginY) * 2 - boxHeight
 
@@ -62,7 +65,6 @@ function Notif.update( )
 		spinner.x = display.screenOriginX + boxHeight * 0.5
 		spinner.y = yPos
 	end
-
 end
 
 
@@ -121,7 +123,7 @@ local function init( message )
 
 	text.text = message
 
-	Notif.update( )
+	N.update( )
 
 	box.y = yPosHidden
 	text.y = yPosHidden
@@ -131,7 +133,6 @@ end
 
 
 local function show( message )
-
 	showing = true
 	loading = false
 
@@ -155,29 +156,30 @@ local function show( message )
 
 	transition.to( text, { time = slideTime, delay = slideDelay, y = boxYHide, onComplete = function(e) showing = false end } )
 	transition.to( box, { time = slideTime, delay = slideDelay, y = boxYHide, onComplete = function(e) showing = false end } )
-
 end
 
 
-function Notif.error( message )
+function N.error( message )
 	boxColor = theme.notifErrorColor
 	show( message )
 end
 
 
-function Notif.info( message )
+function N.info( message )
 	boxColor = theme.notifInfoColor
 	show( message )
 end
 
-function Notif.warning( message )
+
+function N.warning( message )
 	boxColor = theme.notifWarningColor
 	show( message )
 end
 
-function Notif.loading( message )
 
-	control.hideNatives( )
+function N.loading( message )
+
+	natives.hideAll( )
 
 	showing = true
 	loading = true
@@ -211,8 +213,7 @@ function Notif.loading( message )
 end
 
 
-function Notif.hide( )
-
+function N.hide( )
 	local boxYHide = display.screenOriginY - boxHeight
 
 	transition.to( text, { time = slideTime, y = boxYHide } )
@@ -225,22 +226,23 @@ function Notif.hide( )
 	showing = false
 	shadeBox.isVisible = false
 
- 	control.showNatives( )
-
+ 	natives.showAll( )
 end
 
 
-function Notif.destroy( )
-	
-	control.destroy( { text, box, sheet, spinner, shadeBox } )
+function N.destroy( )
+	text:removeSelf( )
+	box:removeSelf( )
+	sheet:removeSelf( )
+	spinner:removeSelf( )
+	shadeBox:removeSelf( )
 
 	text = nil
 	box = nil
 	sheet = nil
 	spinner = nil
 	shadeBox = nil
-
 end
 
 
-return Notif
+return N

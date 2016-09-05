@@ -5,15 +5,8 @@ local composer = require( "composer" )
 local scene = composer.newScene( )
 
 -- biji
-local flatColors = require( "biji.flatColors" )
+local biji = require( "biji.corona" )
 local logger = require( "biji.logger" )
-local header = require( "biji.header" )
-local notif = require( "biji.notification" )
-local menu = require( "biji.menu" )
-local control = require( "biji.control" )
-local flatButton = require( "biji.flatButton" )
-local dialog = require( "biji.dialog" )
-local sceneHandler = require( "biji.sceneHandler" )
 local theme = require( "theme" )
 
 -- ui

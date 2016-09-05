@@ -2,11 +2,13 @@
 local display = require( "display" )
 local widget = require( "widget" )
 local logger = require( "biji.logger" )
-local flatColors = require( "biji.flatColors" )
+local colors = require( "biji.colors" )
 local luaUsers = require( "libs.luausers" )
 local theme = require( "theme" )
 
+
 local G = { }
+
 
 local columnSpace = 10
 
@@ -43,8 +45,6 @@ function onTableViewRowRender( event )
 			content = col.title
 		end
 
-		log( field, content )
-
 		if ( col.isNumber and not row.isCategory ) then
 			content = tonumber( content )
 			
@@ -53,6 +53,10 @@ function onTableViewRowRender( event )
 			else
 				content = content 
 			end
+		end
+
+		if ( not content ) then
+			content = "?"
 		end
 
 		local text = display.newText {
@@ -112,13 +116,11 @@ end
 
 
 function onScrollViewListener( event )
-	
 	if (event.phase == "ended") then
 		local scrollview = event.target
 		
 		scrollview.firstX = 0
 	end
-
 end
 
 
@@ -167,7 +169,9 @@ function G.newGridView( opt )
 		x = scrollview.width / 2,
 		-- y = scrollview.height / 2,
 		backgroundColor = opt.backgroundColor,
-		onRowRender = onTableViewRowRender,		
+		onRowRender = onTableViewRowRender,
+		onRowTouch = opt.onRowTouch,
+
 		-- listener = onTableViewListener,
 
 		listener = function ( event )
@@ -223,7 +227,7 @@ function G.newGridView( opt )
 			isCategory = false,
 			rowHeight = opt.rowHeight,
 			rowColor = { default = opt.rowColor, over = opt.headerColor },
-			lineColor = flatColors.concrete,
+			lineColor = colors.concrete,
 			params = row,
 			scrollview = scrollview,
 		}

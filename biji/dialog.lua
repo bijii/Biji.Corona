@@ -1,9 +1,10 @@
 
 local display = require( "display" )
-local theme = require( "theme" )
-local flatButton = require( "biji.flatButton" )
+local button = require( "biji.button" )
 local logger = require( "biji.logger" )
-local control = require( "biji.control" )
+local natives = require( "biji.native" )
+local theme = require( "theme" )
+
 
 local D = { 
 	isVisible = false
@@ -17,6 +18,9 @@ local box
 
 local buttonHeight = 35
 local buttonWidth = 90
+
+local buttons = { }
+local buttonGroup
 
 local onComplete = nil
 local result = nil
@@ -70,11 +74,9 @@ local function initBoxes( opt )
 
 	group.x = cX
 	group.y = display.screenOriginY + display.actualContentHeight + display.actualContentHeight / 2
+
 end
 
-
-local buttons = { }
-local buttonGroup
 
 local function onButtonRelease( event )
 	result = event.target:getLabel( ):lower( )
@@ -97,7 +99,7 @@ local function initButtons( buttonNames )
 
 		if (not buttons[name]) then
 
-			buttons[name] = flatButton.newButton { 
+			buttons[name] = button.newButton { 
 				text = name:upper( ),
 				textSize = 16,
 				color = theme.dialogButtonColors[name],
@@ -146,7 +148,7 @@ end
 function D.show( opt )
 	init( opt )
 
-	control.hideNatives( )
+	natives.hideAll( )
 	shadeBox:toFront( )
 	group:toFront( )
 
@@ -170,7 +172,8 @@ function D.hide( )
 	transition.to( group, { y = dialogY, time = 200 } )
 
 	D.isVisible = false
-	control.showNatives( )
+	
+	natives.showAll( )
 
 	if (onComplete) then
 		onComplete( { result = result } )

@@ -1,13 +1,12 @@
 
 local display = require( "display" )
 local widget = require( "widget" )
-
-local control = require( "biji.control" )
 local logger = require( "biji.logger" )
-local flatColors = require( "biji.flatColors" )
+local colors = require( "biji.colors" )
 local theme = require( "theme" )
 
-local FlatButton = { }
+
+local B = { }
 
 
 local function onButtonEvent( event )
@@ -41,13 +40,12 @@ local function onButtonEvent( event )
 		end
 
 		event.target.pressed = false
-
 	end
 
 end
 
 
-function FlatButton.newButton( opt )
+function B.newButton( opt )
 	
 	local group = display.newGroup( )
 	group.width = opt.width
@@ -73,12 +71,12 @@ function FlatButton.newButton( opt )
 		width = opt.width,
 		height = opt.height,
 
-		fillColor = { default = fillColor, over = flatColors.shade( fillColor ) },
-		strokeColor = { default = borderColor, over = flatColors.shade( borderColor ) },
+		fillColor = { default = fillColor, over = colors.shade( fillColor ) },
+		strokeColor = { default = borderColor, over = colors.shade( borderColor ) },
 		strokeWidth = opt.borderWidth or 0,
 
 		label = opt.text,
-		labelColor = { default = textColor, over = flatColors.shade( textColor ) },
+		labelColor = { default = textColor, over = colors.shade( textColor ) },
 		labelAlign = opt.textAlign,
 		labelXOffset = textOffset,
 		
@@ -95,17 +93,17 @@ function FlatButton.newButton( opt )
 
 	button.onButtonPress = opt.onPress
 	button.onButtonRelease = opt.onRelease
-	
+
 	group.button = button
 
 	group.setColor = function ( color, overColor )
-		overColor = overColor or flatColors.shade( color )
+		overColor = overColor or colors.shade( color )
 
-		group.button.fillColor = { default = fillColor, over = overColor }
+		group.button.fillColor = { default = color, over = overColor }
+		group.button:setFillColor( unpack(color) )
 	end
 
 	group:insert( button )
-	control.register( button )
 
 	if (opt.iconName) then
 
@@ -129,16 +127,13 @@ function FlatButton.newButton( opt )
 		button.icon = icon
 
 		group:insert( icon )
-		control.register( button )
 	end
 
 	button.text = opt.text
 	button.opt = opt
 
-	control.register( group )
-
 	return group
 
 end
 
-return FlatButton
+return B

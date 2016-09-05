@@ -1,28 +1,23 @@
 
-local flatButton = require( "biji.flatButton" )
-local flatColors = require( "biji.flatColors" )
+local colors = require( "biji.colors" )
 local logger = require( "biji.logger" )
-local control = require( "biji.control" )
-
 local theme = require( "theme" )
 
+
 local F = { }
-
-
 
 
 function F.newTabbar( opt )
 	
 	opt.color = opt.color or theme.buttonColor
 	opt.textColor = opt.textColor or theme.textColor
-	opt.overColor = opt.overColor or flatColors.shade( opt.color )
+	opt.overColor = opt.overColor or colors.shade( opt.color )
 
 	local group = display.newGroup( )
 
 	for i=1,#opt.buttons do
 		local button = opt.buttons[i]
 		button.button.tabbar = group
-		group.button = button
 		group:insert( button )
 	end
 
@@ -42,11 +37,12 @@ function F.newTabbar( opt )
 	local lastButton = opt.buttons[#opt.buttons]
 	
 	-- local line = display.newLine( -firstButton.width / 2, firstButton.height / 2, lastButton.x + lastButton.width / 2, firstButton.height / 2 )
-	-- line.fill = flatColors.white
+	-- line.fill = colors.white
 	-- group:insert( line )
 
 	local focusBox = display.newRect( 0, firstButton.height / 2 - 2, firstButton.width, 4)
-	focusBox.fill = flatColors.orange
+	focusBox.fill = colors.orange
+
 	group.focusBox = focusBox
 	group:insert( focusBox )
 

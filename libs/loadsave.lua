@@ -5,7 +5,8 @@ local _realDefaultLocation = _defaultLocation
 local _validLocations = {
    [system.DocumentsDirectory] = true,
    [system.CachesDirectory] = true,
-   [system.TemporaryDirectory] = true
+   [system.TemporaryDirectory] = true,
+   [system.ResourceDirectory] = true
 }
 
 function M.saveTable(t, filename, location)

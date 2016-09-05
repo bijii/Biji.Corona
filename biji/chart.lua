@@ -1,8 +1,8 @@
 
 local display = require( "display" )
+local colors = require( "biji.colors" )
 local theme = require( "theme" )
 
-local flatColors = require( "biji.flatColors" )
 
 local C = { }
 
@@ -18,6 +18,7 @@ function C.newSummaryBox( opt )
 	opt.titleSize = opt.titleSize or 16
 	opt.titleAlign = opt.titleAlign or "right"
 	opt.iconAlign = opt.iconAlign or "left"
+	opt.iconSize = opt.iconSize or 24
 
 	local group = display.newGroup( )
 
@@ -54,7 +55,7 @@ function C.newSummaryBox( opt )
 	local titleY = box.height / 2 - titleHeight / 2
 	
 	local titleBox = display.newRect( 0, titleY, opt.width, titleHeight )
-	titleBox.fill = flatColors.shade( opt.color )
+	titleBox.fill = colors.shade( opt.color )
 
 	group:insert( box )
 	group:insert( titleBox )
@@ -97,8 +98,17 @@ function C.newSummaryBox( opt )
 			group:remove( group.icon )
 		end
 
-		local fileName = "icons/" .. opt.iconName .. "@2x.png"
-		local icon = display.newImageRect( fileName, system.ResourceDirectory, 48, 48 )
+		local fileName = "icons/" .. opt.iconName
+
+		if (opt.iconSize > 48) then
+			fileName = fileName .. "@3x"
+		elseif (opt.iconSize > 24) then
+			fileName = fileName .. "@2x" 	
+		end
+
+		fileName = fileName .. ".png"
+
+		local icon = display.newImageRect( fileName, system.ResourceDirectory, opt.iconSize, opt.iconSize )
 
 		if ( opt.iconAlign == "left" ) then
 			icon.x = -(box.width / 2) + icon.width / 2 + box.height * 0.1

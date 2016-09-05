@@ -1,7 +1,6 @@
 
 local display = require( "display" )
 local widget = require( "widget" )
-
 local grid = require( "biji.gridView" )
 
 function screenTest( )

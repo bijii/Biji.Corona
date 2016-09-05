@@ -1,8 +1,10 @@
 
-local loadsave = require( "libs.loadsave" )
 local logger = require( "biji.logger" )
+local loadsave = require( "libs.loadsave" )
+
 
 local N = { }
+
 
 function N.isOnline( url, onComplete )
 	network.request( url, "GET", function ( event )
@@ -15,6 +17,7 @@ function N.isOnline( url, onComplete )
 		onComplete( ev )
 	end )
 end
+
 
 function N.downloadJson( url, fileName, baseDir, onComplete )
 	local params = {}
@@ -45,5 +48,6 @@ function N.downloadJson( url, fileName, baseDir, onComplete )
 	    baseDir
 	)
 end
+
 
 return N

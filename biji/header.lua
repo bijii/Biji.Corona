@@ -1,12 +1,12 @@
 
 local display = require( "display" )
-local control = require( "biji.control" )
-local flatColors = require( "biji.flatColors" )
-local flatButton = require( "biji.flatButton" )
+local helper = require( "biji.helper" )
+local colors = require( "biji.colors" )
+local button = require( "biji.button" )
 local logger = require( "biji.logger" )
 local theme = require( "theme" )
 
-local header = {
+local H = {
 	height = 40,
 	width = display.actualContentWidth,
 	color = theme.headerColor,
@@ -42,78 +42,78 @@ local backButton
 local nextButton
 local refreshButton
 
-function header.update( )
+function H.update( )
 	control:fillWidth( group )
 	control:putTop( group )
 end
 
 
 local function onMenuButtonRelease(  )
-	if (header.menu) then
-		header.menu:toggle( )
+	if (H.menu) then
+		H.menu.toggle( )
 		group:toFront( )
 	end
 end
 
 
 local function onBackButtonRelease(  )
-	if (header.onBack) then
-		header.onBack( )
+	if (H.onBack) then
+		H.onBack( )
 	end
 end
 
 
 local function onNextButtonRelease(  )
-	if (header.onNext) then
-		header.onNext( )
+	if (H.onNext) then
+		H.onNext( )
 	end
 end
 
 
 local function onInfoButtonRelease(  )
-	if (header.onInfo) then
-		header.onInfo( )
+	if (H.onInfo) then
+		H.onInfo( )
 	end
 end
 
 
 local function onRefreshButtonRelease(  )
-	if (header.onRefresh) then
-		header.onRefresh( )
+	if (H.onRefresh) then
+		H.onRefresh( )
 	end
 end
 
 
 local function initButtons( )
 	local option = {
-		width = header.height,
-		height = header.height,
+		width = H.height,
+		height = H.height,
 	
-		x = header.height / 2 - header.width / 2,
+		x = H.height / 2 - H.width / 2,
 
-		color = header.color,
+		color = H.color,
 	}
 
 	option.iconName = "menu"
 	option.onRelease = onMenuButtonRelease
-	menuButton = flatButton.newButton( option )
+	menuButton = button.newButton( option )
 
 	option.iconName = "left"
 	option.onRelease = onBackButtonRelease
-	backButton = flatButton.newButton( option )
+	backButton = button.newButton( option )
 
 	option.iconName = "right"
-	option.x = header.width / 2 - header.height / 2
+	option.x = H.width / 2 - H.height / 2
 	option.onRelease = onNextButtonRelease
-	nextButton = flatButton.newButton( option )
+	nextButton = button.newButton( option )
 
 	option.iconName = "info"
 	option.onRelease = onInfoButtonRelease
-	infoButton = flatButton.newButton( option )
+	infoButton = button.newButton( option )
 
 	option.iconName = "refresh"
 	option.onRelease = onRefreshButtonRelease
-	refreshButton = flatButton.newButton( option )
+	refreshButton = button.newButton( option )
 
 	group:insert( menuButton )
 	group:insert( backButton )
@@ -132,53 +132,53 @@ local function initStatusBar( )
 	if (not statusBar) then
 		local height = display.topStatusBarContentHeight
 		
-		local x = display.screenOriginX + header.width / 2
+		local x = display.screenOriginX + H.width / 2
 		local y = display.screenOriginY + height / 2
 
-		statusBar = display.newRect( x, y, header.width, height )
+		statusBar = display.newRect( x, y, H.width, height )
 	end
 
-	statusBar.fill = flatColors.shade( header.color, 0.1 )
+	statusBar.fill = colors.shade( H.color, 0.1 )
 end
 
 
 local function initHeaderBox( )
 	if (not box) then
-		box = display.newRect( 0, 0, header.width, header.height )
+		box = display.newRect( 0, 0, H.width, H.height )
 		group:insert( box )
 	end
 
-	if (header.text and not titleText) then
+	if (H.text and not titleText) then
 		titleText = display.newText {
-			text = header.text,
+			text = H.text,
 			align = "center",
-			width = header.width,
+			width = H.width,
 			font = theme.headerFont,
-			fontSize = header.textSize
+			fontSize = H.textSize
 		}
 
 		group:insert( titleText )
 	end
 
-	box.fill = header.color
-	titleText:setFillColor( unpack( header.textColor ) )
+	box.fill = H.color
+	titleText:setFillColor( unpack( H.textColor ) )
 end
 
 
-function header.init( option )
+function H.init( option )
 	-- init option
 	if (option) then
-		header.height = option.height or header.height
-		header.color = option.color or header.color
+		H.height = option.height or H.height
+		H.color = option.color or H.color
 
-		header.text = option.text
-		header.textSize = option.textSize or header.textSize
-		header.textColor = option.textColor or header.textColor
+		H.text = option.text
+		H.textSize = option.textSize or H.textSize
+		H.textColor = option.textColor or H.textColor
 
-		header.onBack = option.onBack
-		header.onNext = option.onNext
+		H.onBack = option.onBack
+		H.onNext = option.onNext
 
-		header.menu = option.menu
+		H.menu = option.menu
 	end
 
 	-- init group
@@ -192,68 +192,91 @@ function header.init( option )
 	-- create buttons
 	initButtons( )
 
-	control.fillWidth( group )
-	control.putTop( group )
+	helper.fillWidth( group )
+	helper.putTop( group )
 
-	header.x = group.x
-	header.y = group.y
+	H.x = group.x
+	H.y = group.y
 
-	header.top = display.screenOriginY
-	header.bottom = display.screenOriginY + display.topStatusBarContentHeight + header.height
+	H.top = display.screenOriginY
+	H.bottom = display.screenOriginY + display.topStatusBarContentHeight + H.height
 
-	header.isVisible = false
+	H.isVisible = false
 
 	-- hide group
-	group.y = header.top - header.width
+	group.y = H.top - H.width
 end
 
 
-function header.showMenuButton( )
-	menuButton.isVisible = true
-end
-
-function header.hideMenuButton( )
-	menuButton.isVisible = false
-end
-
-function header.showNextButton( )
-	nextButton.isVisible = true
-end
-
-function header.hideNextButton( )
-	nextButton.isVisible = false
-end
-
-function header.showBackButton( )
-	backButton.isVisible = true
-end
-
-function header.hideBackButton( )
-	backButton.isVisible = false
-end
-
-function header.showRefreshButton( )
-	refreshButton.isVisible = true
-end
-
-function header.hideRefreshButton( )
-	refreshButton.isVisible = false
+function H.showMenuButton( )
+	if ( menuButton ) then
+		menuButton.isVisible = true
+	end
 end
 
 
-function header.destroy(  )
-	control.destroy( header.menu )
-	control.destroy( box )
-	control.destroy( group )
+function H.hideMenuButton( )
+	if ( menuButton ) then
+		menuButton.isVisible = false
+	end
+end
+
+
+function H.showNextButton( )
+	if ( nextButton ) then
+		nextButton.isVisible = true
+	end
+end
+
+
+function H.hideNextButton( )
+	if ( nextButton ) then
+		nextButton.isVisible = false
+	end
+end
+
+
+function H.showBackButton( )
+	if ( backButton ) then
+		backButton.isVisible = true
+	end
+end
+
+
+function H.hideBackButton( )
+	if ( backButton ) then
+		backButton.isVisible = false
+	end
+end
+
+
+function H.showRefreshButton( )
+	if ( refreshButton ) then
+	 	refreshButton.isVisible = true
+	end 
+end
+
+
+function H.hideRefreshButton( )
+	if ( refreshButton ) then
+		refreshButton.isVisible = false
+	end
+end
+
+
+function H.destroy(  )
+	H.menu:destroySelf( )
+	box:destroySelf( )
+	group:destroySelf( )
 	
-	header.menu = nil
+	H.menu = nil
 	header = nil
 	box = nil
 	group = nil
 end
 
 
-function header:toFront( )
+function H.toFront( )
 	if (group) then
 		group:toFront( )
 	end
@@ -263,18 +286,20 @@ function header:toFront( )
 	end
 end
 
-function header.show( )
-	transition.to( group, { y = header.y, effect = "slideUp" } )
-	header.isVisible = true
+
+function H.show( )
+	transition.to( group, { y = H.y, effect = "slideUp" } )
+	H.isVisible = true
 end
 
-function header.hide( )
-	local topy = header.top - header.height / 2
+
+function H.hide( )
+	local topy = H.top - H.height / 2
 
 	transition.to( group, { y = topy, effect = "slideUp" } )
-	header.isVisible = false
+	H.isVisible = false
 end
 
 initStatusBar( )
 
-return header
+return H
