@@ -26,6 +26,7 @@ function onTableViewRowRender( event )
 	for field,col in spairs(columns, function(t, a, b) return t[a].id < t[b].id end ) do
 		-- log(field, col)
 		-- print(field)
+		-- log(row)
 
 		local x = lastX + col.width / 2
 		
@@ -234,8 +235,8 @@ function G.newGridView( opt )
 	end
 
 	scrollview.insertRows = function ( rows )
-		for i=1,#rows do
-			scrollview.insertRow( rows[i] )
+		for k,row in pairs(rows) do
+			scrollview.insertRow( row )
 		end
 	end
 

@@ -64,7 +64,7 @@ function C.gotoNextScene( nextSceneName )
     timer.performWithDelay( 1000, function ( event )
         local nextScene = composer.getScene( nextSceneName )
 
-        nextScene.returnScene = prevSceneName
+        nextScene.returnSceneName = prevSceneName
     end )
 end
 

@@ -22,17 +22,13 @@ local B = {
 	controller = controller,
 	helper = helper,
 	init = controller.init,
+	native = natives,
 
 	newTextBox = textbox.newTextBox,
 	newButton = button.newButton,
 	newGridView = gridview.newGridView,
 	newSummaryBox = chart.newSummaryBox,
 	newTabbar = tabbar.newTabbar,
-
-	registerNative = natives.register,
-	setMaxInput = natives.setMaxInput,
-	setUnderline = textbox.setUnderline,
-
 }
 
 
