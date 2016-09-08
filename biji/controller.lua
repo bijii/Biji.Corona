@@ -77,6 +77,7 @@ function C.init( opt )
         C.title = opt.title or C.title
     end
 
+    display.setStatusBar( display.DefaultStatusBar )
     display.setDefault( "background", unpack( theme.backgroundColor ) )
     widget.setTheme( "widget_theme_android_holo_light" )
 

@@ -37,7 +37,7 @@ function N.postJson( url, data, onComplete )
 		url, 
 		"POST", 
 		function( event )
-
+			log(event)
 	    	if ( event.isError ) then
 	    		if ( not onComplete ) then
 	    			return
@@ -57,7 +57,7 @@ function N.postJson( url, data, onComplete )
     			local status = tostring( event.status )
     			local errorStatus = string.starts( status, "4" ) or string.starts( status, "5" )
 
-	    		local response = json.decode( event.response ) or event.response or status
+	    		local response = event.response or status
 	    		
 	    		onComplete {
 		    		isError = false or errorStatus,
@@ -87,7 +87,7 @@ function N.getJson( url, onComplete )
 			local status = tostring( event.status )
 			local errorStatus = string.starts( status, "4" ) or string.starts( status, "5" )
     		
-    		local response = json.decode( event.response ) or event.response or status
+    		local response = event.response or status
 
     		onComplete {
 	    		isError = false or errorStatus,

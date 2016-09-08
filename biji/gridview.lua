@@ -235,8 +235,14 @@ function G.newGridView( opt )
 	end
 
 	scrollview.insertRows = function ( rows )
-		for k,row in pairs(rows) do
-			scrollview.insertRow( row )
+		if ( type(rows) == "function" ) then
+			for k,row in rows do
+				scrollview.insertRow( row )
+			end
+		else
+			for k,row in pairs(rows) do
+				scrollview.insertRow( row )
+			end
 		end
 	end
 

@@ -40,7 +40,7 @@ function N.register( control )
 		local box = display.newRect( x, y, control.width, control.height )
 		
 		local text = display.newText{ 
-			text = control.text, 
+			text = control.text or "", 
 			x = x, 
 			y = y, 
 			width = control.width - 20, 

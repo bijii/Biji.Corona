@@ -70,3 +70,27 @@ function gridTest(  )
 	gridview.insertRows( rows )
 
 end
+
+function postTest( )
+	
+	local function networkListener( event )
+	    if ( event.isError ) then
+	        print( "Network error: ", event.response )
+	    else
+	        print ( "RESPONSE: " .. event.response )
+	    end
+	end
+
+	local headers = {}
+
+	headers["Content-Type"] = "application/x-www-form-urlencoded"
+	headers["Accept-Language"] = "en-US"
+
+	local body = "telp=12345678&pin=&"--"telp=red&pin=small"
+
+	local params = {}
+	params.headers = headers
+	params.body = body
+
+	network.request( "http://118.98.64.210/jtccmbe/?c=account&a=login", "POST", networkListener, params )
+end
